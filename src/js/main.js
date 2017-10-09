@@ -2,8 +2,9 @@
 
 import dragDrop from './hp-drag';
 import spriteCss from './hp-css-sprite';
-const fs = global.require('fs');
-const postcss = global.require('postcss');
+import { handleCss, handleHtml, handleImage } from './hp-handlefile';
+// const fs = global.require('fs');
+// const postcss = global.require('postcss');
 const sprites = global.require('postcss-sprites');
 const path = global.require('path');
 const autoprefixer = global.require('autoprefixer');
@@ -44,43 +45,25 @@ const cssnano = global.require('cssnano');
 				}
 			}
 		}
-
+		console.log(info);
 		let pathObj = path.parse(info[0].path);
 
 		if(/css/.test(pathObj.ext)) {	// 传入 css 文件
 
 			let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
-			// 创建本地文件夹
-			mkidrLocal(basePath);
 			let opts = spriteCss(basePath, isPc);
 			plugins.push(sprites(opts));
-			let css = fs.readFileSync(info[0].path, 'utf-8');
-			postcss(plugins)
-				.process(css, { from: info[0].path, to: basePath + '/dist/css/' + pathObj.base })
-				.then(result => {
-					fs.writeFileSync(basePath + '/dist/css/' + pathObj.base, result.css);
-					if(result.map)
-						fs.writeFileSync(basePath + '/dist/css/' + pathObj.base + '.map', result.map);
-				});
+
+			handleCss(info[0].path, plugins);
 
 		}else if(/html/.test(pathObj.ext)) {	// 传入 html 文件
 
-			let basePath = pathObj.dir;
-			// 创建本地文件夹
-			mkidrLocal(basePath);
-			fs.readFile(info[0].path, function(err, data){
-				if(err){
-					console.error(err);
-				}else {
-					let html = data;
-					fs.writeFile(basePath + '/dist/' + pathObj.base, html.toString(), function(err){
-						if(err){
-							console.error(err);
-						}
-					});
-				}
-			});
-			
+			handleHtml(info[0].path);
+
+		}else {
+
+			handleImage(info);
+
 		}
 		
 	});
@@ -92,20 +75,19 @@ const cssnano = global.require('cssnano');
 *
 * @param {string} basePath
 */
-function mkidrLocal(basePath) {
-	fs.exists(path.join(basePath, '/dist/'), function(data) {
-		if(!data) {
-			fs.mkdir(path.join(basePath, '/dist/'), function(err){
-				if(!err) {
-					fs.mkdir(path.join(basePath, '/dist/img/'), function(err){
-						if(err) console.log(err);
-					});
-					fs.mkdir(path.join(basePath, '/dist/css/'), function(err){
-						if(err) console.log(err);
-					});
-				}
-			});
-		}
-	});
-	
-}
+// function mkidrLocal(basePath) {
+// 	fs.exists(path.join(basePath, '/dist/'), function(data) {
+// 		if(!data) {
+// 			fs.mkdir(path.join(basePath, '/dist/'), function(err){
+// 				if(!err) {
+// 					fs.mkdir(path.join(basePath, '/dist/img/'), function(err){
+// 						if(err) console.log(err);
+// 					});
+// 					fs.mkdir(path.join(basePath, '/dist/css/'), function(err){
+// 						if(err) console.log(err);
+// 					});
+// 				}
+// 			});
+// 		}
+// 	});
+// }
