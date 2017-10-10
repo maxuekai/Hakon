@@ -16,15 +16,26 @@ function createWindow () {
 	mainWindow = new BrowserWindow({width: 800, height: 600});
 
 	// and load the index.html of the app.
-	// mainWindow.loadURL(url.format({
-	//   pathname: path.join(__dirname, '/dist/index.html'),
-	//   protocol: 'file:',
-	//   slashes: true
-	// }))
-	mainWindow.loadURL('http://127.0.0.1:8080', {});
+	mainWindow.loadURL(url.format({
+	  pathname: path.join(__dirname, '/dist/index.html'),
+	  protocol: 'file:',
+	  slashes: true
+	}))
+	// mainWindow.loadURL('http://127.0.0.1:8080', {});
+	// mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
+	mainWindow.webContents.executeJavaScript(`
+	    var path = require('path');
+	    module.paths.push(path.resolve('node_modules'));
+	    module.paths.push(path.resolve('../node_modules'));
+	    module.paths.push(path.resolve(__dirname, '..', '..', 'electron', 'node_modules'));
+	    module.paths.push(path.resolve(__dirname, '..', '..', 'electron.asar', 'node_modules'));
+	    module.paths.push(path.resolve(__dirname, '..', '..', 'app', 'node_modules'));
+	    module.paths.push(path.resolve(__dirname, '..', '..', 'app.asar', 'node_modules'));
+	    path = undefined;
+	  `);
 
 	// Open the DevTools.
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function () {

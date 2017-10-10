@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "build": "webpack",
-    "dev": "webpack-dev-server --open"
+    "dev": "webpack-dev-server --open",
+    "package": "electron-packager . --platform=win32 --arch=x64 --electron-version=1.7.8 --overwrite --ignore=.gitignore"
   },
   "author": "maxuekai",
   "license": "ISC",
@@ -42,5 +43,36 @@
     "webpack-dev-server": "^2.7.1",
     "webpack-target-electron-renderer": "^0.4.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "autoprefixer": "^7.1.4",
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "cssnano": "^3.10.0",
+    "electron": "^1.7.8",
+    "electron-rebuild": "^1.6.0",
+    "electron-webpack-plugin": "^2.0.0",
+    "eslint": "^4.6.1",
+    "eslint-loader": "^1.9.0",
+    "file-loader": "^0.11.2",
+    "fs": "0.0.1-security",
+    "fs-extra": "^4.0.2",
+    "html-webpack-plugin": "^2.30.1",
+    "path": "^0.12.7",
+    "phantomjssmith": "^1.0.0",
+    "pixelsmith": "^2.1.2",
+    "postcss": "^6.0.12",
+    "postcss-import": "^11.0.0",
+    "postcss-js": "^1.0.1",
+    "postcss-loader": "^2.0.6",
+    "postcss-sprites": "^4.2.1",
+    "spritesmith": "^3.1.1",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.5.6",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-target-electron-renderer": "^0.4.0"
+  }
 }
