@@ -18,6 +18,20 @@ npm start
 
 ```
 
+### Package
+
+Package with electron-packager
+
+```js
+
+// install electron-packager in global
+npm i -g electron-packager
+
+// package
+npm run package
+
+```
+
 ### More
 
 More features are coming!
