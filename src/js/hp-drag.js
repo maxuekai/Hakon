@@ -1,7 +1,11 @@
 'use strict';
 
 // const path = global.require('path');
-
+/**
+* 处理拖拽事件
+*
+* @param {function} cb
+*/
 export default function(cb) {
 
 	// 取消默认行为
@@ -27,12 +31,16 @@ export default function(cb) {
 
 	dropZone.addEventListener('dragleave', function(e){
 		e.preventDefault();
-		this.classList.remove('drop-hover');
+		// this.classList.remove('drop-hover');
 	}, false);
 
 	dropZone.addEventListener('drop', function(e){
 		e.preventDefault();
 		this.classList.remove('drop-hover');
+		let p = document.querySelectorAll('.drag-log p');
+		for(let i = 0; i < p.length; i++) {
+			p[i].innerHTML = '';
+		}
 		let fileInfo = e.dataTransfer.files;
 		cb(fileInfo);
 	}, false);

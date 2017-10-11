@@ -3,7 +3,14 @@
 const postcss = global.require('postcss');
 const path = global.require('path');
 
-export default function(basePath, isPc) {
+
+/**
+* 配置 sprite 信息
+*
+* @param {string} basePath
+* @param {string} mode
+*/
+export default function(basePath, mode) {
 
 	let opts = {
 		stylesheetPath: path.join(basePath, '/dist/css/'),
@@ -29,20 +36,50 @@ export default function(basePath, isPc) {
 		},
 		hooks: {
 			onUpdateRule: function(rule, token, image) {
-				['width', 'height'].forEach(function(prop){
-					let value = image.coords[prop];
-					if(image.retina) {
-						value /= image.ratio;
-					}
-					rule.insertAfter(rule.last, postcss.decl({
-						prop: prop,
-						value: value + 'px'
-					}));
-				});
+				// ['width', 'height'].forEach(function(prop){
+				// 	let value = image.coords[prop];
+				// 	if(image.retina) {
+				// 		value /= image.ratio;
+				// 	}
+				// 	rule.insertAfter(rule.last, postcss.decl({
+				// 		prop: prop,
+				// 		value: value + 'px'
+				// 	}));
+				// });
 
 				let backgroundSize, backgroundPosition;
 
-				if(!isPc) {
+				if(mode == 'pc') {
+
+					let backgroundPositionX = -image.coords.x,
+						backgroundPositionY = -image.coords.y;
+
+					backgroundSize = postcss.decl({
+						prop: 'background-size',
+						value: 'auto'
+					});
+
+					backgroundPosition = postcss.decl({
+						prop: 'background-position',
+						value: backgroundPositionX + 'px ' + backgroundPositionY + 'px'
+					});
+
+				}else if(mode == 'rem') {
+
+					let backgroundPositionX = -(image.coords.x / 100),
+						backgroundPositionY = -(image.coords.y / 100);
+
+					backgroundSize = postcss.decl({
+						prop: 'background-size',
+						value: (image.spriteWidth / 100) + 'rem ' + 'auto'
+					});
+
+					backgroundPosition = postcss.decl({
+						prop: 'background-position',
+						value: backgroundPositionX + 'rem ' + backgroundPositionY + 'rem'
+					});
+
+				}else {
 
 					let backgroundSizeX = (image.spriteWidth / image.coords.width) * 100,
 						backgroundSizeY = (image.spriteHeight / image.coords.height) * 100,
@@ -62,21 +99,6 @@ export default function(basePath, isPc) {
 					backgroundPosition = postcss.decl({
 						prop: 'background-position',
 						value: backgroundPositionX + '% ' + backgroundPositionY + '%'
-					});
-
-				}else {
-
-					let backgroundPositionX = -image.coords.x,
-						backgroundPositionY = -image.coords.y;
-
-					backgroundSize = postcss.decl({
-						prop: 'background-size',
-						value: 'auto'
-					});
-
-					backgroundPosition = postcss.decl({
-						prop: 'background-position',
-						value: backgroundPositionX + 'px ' + backgroundPositionY + 'px'
 					});
 
 				}

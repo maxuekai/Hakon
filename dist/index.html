@@ -12,28 +12,48 @@
 		</div>
 		<div class="layout-body">
 			<div class="wp-drag">
-				<div class="drag-main">将文件拖拽到此区域</div>
+				<div class="drag-main drop-hover">将文件拖拽到此区域</div>
+				<div class="drag-log">
+					<p class="normal"></p>
+					<p class="succ"></p>
+					<p class="fail"></p>
+				</div>
 			</div>
 			<div class="wp-menu">
 				<div class="menu-options">
 					<ul>
 						<li>
-							<input type="checkbox" value="pc-module" />
-							PC模式
+							<input type="checkbox" value="pc" />
+							雪碧图PC模式
+						</li>
+						<li>
+							<input type="checkbox" value="rem" />
+							雪碧图rem模式
 						</li>
 						<li>
 							<input type="checkbox" value="no-picnano" />
 							不压缩图片
 						</li>
 						<li>
-							<input type="checkbox" value="no-autoprefixer">
+							<input type="checkbox" value="no-autoprefixer" />
 							关闭自动加前缀功能
 						</li>
 						<li>
-							<input type="checkbox" value="no-cssnano">
+							<input type="checkbox" value="no-cssnano" />
 							不压缩css
 						</li>
+						<li>
+							<input type="checkbox" value="@import" />
+							不处理@import文件
+						</li>
 					</ul>
+				</div>
+				<div class="menu-address">
+					<h3>保存到</h3>
+					<div class="local">
+						<input type="checkbox" value="local" checked>
+						本地
+					</div>
 				</div>
 			</div>
 		</div>

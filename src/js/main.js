@@ -8,50 +8,57 @@ import { handleCss, handleHtml, handleImage } from './hp-handlefile';
 const sprites = global.require('postcss-sprites');
 const path = global.require('path');
 const autoprefixer = global.require('autoprefixer');
+const atImport = global.require('postcss-import');
 const cssnano = global.require('cssnano');
 
 (function(){
 
 	dragDrop(function(info){
 
-		let isPc = false,
-			plugins = [ autoprefixer, cssnano ],
-			checkbox = document.querySelectorAll('input[type=checkbox]');
+		let spriteMode = '',
+			plugins = [ atImport, autoprefixer, cssnano ],
+			checkbox = document.querySelectorAll('.menu-options input[type=checkbox]');
 
 		for(let i = 0; i < checkbox.length; i++) {
 			if(checkbox[i].checked) {
 				let index;
+
 				switch(checkbox[i].value) {
-				case 'pc-module':
-					isPc = true;
+				case 'pc':
+					spriteMode = 'pc';
+					break;
+				case 'rem':
+					spriteMode = 'rem';
 					break;
 				case 'no-picnano':
 					console.log('no-picnano');
 					break;
 				case 'no-autoprefixer':
 					index = plugins.indexOf(autoprefixer);
-					if(index){
-						plugins.splice(index, 1);
-					}
 					break;
 				case 'no-cssnano':
 					index = plugins.indexOf(cssnano);
-					if(index){
-						plugins.splice(index, 1);
-					}
+					break;
+				case '@import':
+					index = plugins.indexOf(atImport);
 					break;
 				default:
+					index = null;
 					break;
+				}
+
+				if(index){
+					plugins.splice(index, 1);
 				}
 			}
 		}
-		console.log(info);
+
 		let pathObj = path.parse(info[0].path);
 
 		if(/css/.test(pathObj.ext)) {	// 传入 css 文件
 
 			let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
-			let opts = spriteCss(basePath, isPc);
+			let opts = spriteCss(basePath, spriteMode);
 			plugins.push(sprites(opts));
 
 			handleCss(info[0].path, plugins);
@@ -69,25 +76,3 @@ const cssnano = global.require('cssnano');
 	});
 
 })();
-
-/**
-* 创建本地文件夹
-*
-* @param {string} basePath
-*/
-// function mkidrLocal(basePath) {
-// 	fs.exists(path.join(basePath, '/dist/'), function(data) {
-// 		if(!data) {
-// 			fs.mkdir(path.join(basePath, '/dist/'), function(err){
-// 				if(!err) {
-// 					fs.mkdir(path.join(basePath, '/dist/img/'), function(err){
-// 						if(err) console.log(err);
-// 					});
-// 					fs.mkdir(path.join(basePath, '/dist/css/'), function(err){
-// 						if(err) console.log(err);
-// 					});
-// 				}
-// 			});
-// 		}
-// 	});
-// }

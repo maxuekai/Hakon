@@ -3,6 +3,7 @@
 const fs = global.require('fs');
 const path = global.require('path');
 const postcss = global.require('postcss');
+import log from './hp-log';
 
 export { handleCss, handleHtml, handleImage };
 /**
@@ -15,15 +16,16 @@ function handleCss(stylesheetPath, plugins) {
 	let pathObj = path.parse(stylesheetPath);
 	let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
 	existsFloder(basePath, path.join(basePath, '/dist/css/'));
+	log(stylesheetPath);
 	fs.readFile(stylesheetPath, 'utf-8', function(err, css){
 		postcss(plugins)
 			.process(css, { from: stylesheetPath, to: basePath + '/dist/css/' + pathObj.base })
 			.then(result => {
 				fs.writeFile(path.join(basePath, '/dist/css/', pathObj.base), result.css, function(err){
 					if(err) {
-						console.error(err);
+						log(err.toString(), 'fail');
 					}else {
-						alert('success');
+						log('success: ' + path.join(basePath, '/dist/css/', pathObj.base), 'success');
 					}
 					if(result.map)
 						fs.writeFileSync(basePath + '/dist/css/' + pathObj.base + '.map', result.map);
@@ -42,16 +44,17 @@ function handleHtml(htmlPath) {
 	let pathObj = path.parse(htmlPath);
 	let basePath = pathObj.dir;
 	existsFloder(basePath, htmlPath);
+	log(htmlPath);
 	fs.readFile(htmlPath, function(err, data){
 		if(err){
-			console.error(err);
+			log(err.toString(), 'fail');
 		}else {
 			let html = data;
-			fs.writeFile(basePath + '/dist/' + pathObj.base, html.toString(), function(err){
+			fs.writeFile(path.join(basePath, '/dist/', pathObj.base), html.toString(), function(err){
 				if(err){
-					console.error(err);
+					log(err.toString(), 'fail');
 				}else {
-					alert('success');
+					log('success: ' + path.join(basePath, '/dist/', pathObj.base), 'success');
 				}
 			});
 		}
@@ -72,8 +75,10 @@ function handleImage(image) {
 	// 创建本地文件夹
 	existsFloder(basePath, outputPath);
 	for(let i = 0; i < image.length; i++) {
+		log(image[i].path);
+		log('<br/>');
 		let input = fs.createReadStream(image[i].path),
-			output = fs.createWriteStream(outputPath + path.sep + image[i].name);
+			output = fs.createWriteStream(path.join(outputPath, image[i].name));
 		input.on('data', function(d) {
 			output.write(d);
 		});
@@ -82,6 +87,8 @@ function handleImage(image) {
 		});
 		input.on('end', function() {
 			output.end();
+			log(path.join(outputPath, image[i].name), 'success');
+			log('<br/>', 'success');
 		});
 	}
 }
