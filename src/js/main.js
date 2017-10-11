@@ -22,7 +22,6 @@ const cssnano = global.require('cssnano');
 		for(let i = 0; i < checkbox.length; i++) {
 			if(checkbox[i].checked) {
 				let index;
-
 				switch(checkbox[i].value) {
 				case 'pc':
 					spriteMode = 'pc';
@@ -46,8 +45,7 @@ const cssnano = global.require('cssnano');
 					index = null;
 					break;
 				}
-
-				if(index){
+				if(index >= 0){
 					plugins.splice(index, 1);
 				}
 			}
@@ -59,8 +57,7 @@ const cssnano = global.require('cssnano');
 
 			let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
 			let opts = spriteCss(basePath, spriteMode);
-			plugins.push(sprites(opts));
-
+			plugins.unshift(sprites(opts));
 			handleCss(info[0].path, plugins);
 
 		}else if(/html/.test(pathObj.ext)) {	// 传入 html 文件

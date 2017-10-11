@@ -3,6 +3,9 @@
 const fs = global.require('fs');
 const path = global.require('path');
 const postcss = global.require('postcss');
+const imagemin = global.require('imagemin');
+const imageminJpegtran = global.require('imagemin-jpegtran');
+const imageminPngquant = global.require('imagemin-pngquant');
 import log from './hp-log';
 
 export { handleCss, handleHtml, handleImage };
@@ -74,23 +77,39 @@ function handleImage(image) {
 	outputPath = outputPath.join(path.sep);
 	// 创建本地文件夹
 	existsFloder(basePath, outputPath);
-	for(let i = 0; i < image.length; i++) {
-		log(image[i].path);
-		log('<br/>');
-		let input = fs.createReadStream(image[i].path),
-			output = fs.createWriteStream(path.join(outputPath, image[i].name));
-		input.on('data', function(d) {
-			output.write(d);
-		});
-		input.on('error', function(err) {
-			throw err;
-		});
-		input.on('end', function() {
-			output.end();
-			log(path.join(outputPath, image[i].name), 'success');
-			log('<br/>', 'success');
-		});
-	}
+	// for(let i = 0; i < image.length; i++) {
+	// 	log(image[i].path);
+	// 	log('<br/>');
+	// 	let input = fs.createReadStream(image[i].path),
+	// 		output = fs.createWriteStream(path.join(outputPath, image[i].name));
+	// 	input.on('data', function(d) {
+	// 		output.write(d);
+	// 	});
+	// 	input.on('error', function(err) {
+	// 		throw err;
+	// 	});
+	// 	input.on('end', function() {
+	// 		output.end();
+	// 		log(path.join(outputPath, image[i].name), 'success');
+	// 		log('<br/>', 'success');
+	// 	});
+	// }
+	console.log(image);
+	let imagePath = [];
+	image.forEach((ele) => {
+		imagePath.push(ele.path);
+	});
+	console.log(imagePath);
+	imagemin(imagePath, path.join(outputPath), {
+		plugins: [
+			imageminJpegtran(),
+			imageminPngquant({quality: '65-80'})
+		]
+	}).then(files => {
+		log('success', 'success');
+		console.log(files);
+		//=> [{data: <Buffer 89 50 4e …>, path: 'build/images/foo.jpg'}, …] 
+	});
 }
 
 /**
