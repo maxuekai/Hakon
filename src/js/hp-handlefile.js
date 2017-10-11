@@ -94,11 +94,10 @@ function handleImage(image) {
 	// 		log('<br/>', 'success');
 	// 	});
 	// }
-	console.log(image);
 	let imagePath = [];
-	image.forEach((ele) => {
-		imagePath.push(ele.path);
-	});
+	for(let i = 0; i < image.length; i++) {
+		imagePath.push(image[i].path);
+	}
 	console.log(imagePath);
 	imagemin(imagePath, path.join(outputPath), {
 		plugins: [
