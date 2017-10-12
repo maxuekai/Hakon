@@ -20,7 +20,7 @@ function createWindow () {
 	//   pathname: path.join(__dirname, '/dist/index.html'),
 	//   protocol: 'file:',
 	//   slashes: true
-	// }))
+	// }));
 	mainWindow.loadURL('http://127.0.0.1:8080', {});
 	// mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
 	mainWindow.webContents.executeJavaScript(`

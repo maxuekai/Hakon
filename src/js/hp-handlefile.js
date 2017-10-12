@@ -34,9 +34,8 @@ function handleCss(stylesheetPath, plugins) {
 								imageminJpegtran(),
 								imageminPngquant({quality: '65-80'})
 							]
-						}).then(files => {
+						}).then(() => {
 							log('success: ' + path.join(basePath, '/dist/css/', pathObj.base), 'success');
-							console.log(files);
 						});
 					}
 					if(result.map)
@@ -96,10 +95,8 @@ function handleImage(image, imgQuant) {
 				imageminJpegtran(),
 				imageminPngquant({quality: '65-80'})
 			]
-		}).then(files => {
+		}).then(() => {
 			log('success', 'success');
-			console.log(files);
-			//=> [{data: <Buffer 89 50 4e …>, path: 'build/images/foo.jpg'}, …] 
 		});
 	}else {
 		for(let i = 0; i < image.length; i++) {
