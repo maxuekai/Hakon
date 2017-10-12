@@ -21,14 +21,23 @@ function handleCss(stylesheetPath, plugins) {
 	existsFloder(basePath, path.join(basePath, '/dist/css/'));
 	log(stylesheetPath);
 	fs.readFile(stylesheetPath, 'utf-8', function(err, css){
-		postcss(plugins)
+		postcss(plugins)	// 处理css
 			.process(css, { from: stylesheetPath, to: basePath + '/dist/css/' + pathObj.base })
 			.then(result => {
 				fs.writeFile(path.join(basePath, '/dist/css/', pathObj.base), result.css, function(err){
 					if(err) {
 						log(err.toString(), 'fail');
 					}else {
-						log('success: ' + path.join(basePath, '/dist/css/', pathObj.base), 'success');
+						// 压缩雪碧图
+						imagemin([path.join(basePath, '/dist/img/spr*.png')],path.join(basePath, '/dist/img/'), {
+							plugins: [
+								imageminJpegtran(),
+								imageminPngquant({quality: '65-80'})
+							]
+						}).then(files => {
+							log('success: ' + path.join(basePath, '/dist/css/', pathObj.base), 'success');
+							console.log(files);
+						});
 					}
 					if(result.map)
 						fs.writeFileSync(basePath + '/dist/css/' + pathObj.base + '.map', result.map);
@@ -69,7 +78,7 @@ function handleHtml(htmlPath) {
 *
 * @param {Array} image
 */
-function handleImage(image) {
+function handleImage(image, imgQuant) {
 	let pathObj = path.parse(image[0].path);
 	let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep),
 		outputPath = pathObj.dir.split(path.sep);
@@ -77,38 +86,41 @@ function handleImage(image) {
 	outputPath = outputPath.join(path.sep);
 	// 创建本地文件夹
 	existsFloder(basePath, outputPath);
-	// for(let i = 0; i < image.length; i++) {
-	// 	log(image[i].path);
-	// 	log('<br/>');
-	// 	let input = fs.createReadStream(image[i].path),
-	// 		output = fs.createWriteStream(path.join(outputPath, image[i].name));
-	// 	input.on('data', function(d) {
-	// 		output.write(d);
-	// 	});
-	// 	input.on('error', function(err) {
-	// 		throw err;
-	// 	});
-	// 	input.on('end', function() {
-	// 		output.end();
-	// 		log(path.join(outputPath, image[i].name), 'success');
-	// 		log('<br/>', 'success');
-	// 	});
-	// }
-	let imagePath = [];
-	for(let i = 0; i < image.length; i++) {
-		imagePath.push(image[i].path);
+	if(imgQuant) {
+		let imagePath = [];
+		for(let i = 0; i < image.length; i++) {
+			imagePath.push(image[i].path);
+		}
+		imagemin(imagePath, path.join(outputPath), {
+			plugins: [
+				imageminJpegtran(),
+				imageminPngquant({quality: '65-80'})
+			]
+		}).then(files => {
+			log('success', 'success');
+			console.log(files);
+			//=> [{data: <Buffer 89 50 4e …>, path: 'build/images/foo.jpg'}, …] 
+		});
+	}else {
+		for(let i = 0; i < image.length; i++) {
+			log(image[i].path);
+			log('<br/>');
+			let input = fs.createReadStream(image[i].path),
+				output = fs.createWriteStream(path.join(outputPath, image[i].name));
+			input.on('data', function(d) {
+				output.write(d);
+			});
+			input.on('error', function(err) {
+				throw err;
+			});
+			input.on('end', function() {
+				output.end();
+				log(path.join(outputPath, image[i].name), 'success');
+				log('<br/>', 'success');
+			});
+		}
 	}
-	console.log(imagePath);
-	imagemin(imagePath, path.join(outputPath), {
-		plugins: [
-			imageminJpegtran(),
-			imageminPngquant({quality: '65-80'})
-		]
-	}).then(files => {
-		log('success', 'success');
-		console.log(files);
-		//=> [{data: <Buffer 89 50 4e …>, path: 'build/images/foo.jpg'}, …] 
-	});
+	
 }
 
 /**

@@ -16,12 +16,12 @@ const cssnano = global.require('cssnano');
 	dragDrop(function(info){
 
 		let spriteMode = '',
-			plugins = [ atImport, autoprefixer, cssnano ],
+			imgQuant = false,
+			plugins = [ ],
 			checkbox = document.querySelectorAll('.menu-options input[type=checkbox]');
 
 		for(let i = 0; i < checkbox.length; i++) {
 			if(checkbox[i].checked) {
-				let index;
 				switch(checkbox[i].value) {
 				case 'pc':
 					spriteMode = 'pc';
@@ -29,24 +29,20 @@ const cssnano = global.require('cssnano');
 				case 'rem':
 					spriteMode = 'rem';
 					break;
-				case 'no-picnano':
-					console.log('no-picnano');
+				case 'picnano':
+					imgQuant = true;
 					break;
-				case 'no-autoprefixer':
-					index = plugins.indexOf(autoprefixer);
+				case 'autoprefixer':
+					plugins.push(autoprefixer);
 					break;
-				case 'no-cssnano':
-					index = plugins.indexOf(cssnano);
+				case 'cssnano':
+					plugins.push(cssnano);
 					break;
 				case '@import':
-					index = plugins.indexOf(atImport);
+					plugins.push(atImport);
 					break;
 				default:
-					index = null;
 					break;
-				}
-				if(index >= 0){
-					plugins.splice(index, 1);
 				}
 			}
 		}
@@ -66,7 +62,7 @@ const cssnano = global.require('cssnano');
 
 		}else {
 
-			handleImage(info);
+			handleImage(info, imgQuant);
 
 		}
 		
