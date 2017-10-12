@@ -72,6 +72,7 @@
     "phantomjssmith": "^1.0.0",
     "pixelsmith": "^2.1.2",
     "postcss": "^6.0.12",
+    "postcss-cssnext": "^3.0.2",
     "postcss-import": "^11.0.0",
     "postcss-js": "^1.0.1",
     "postcss-loader": "^2.0.6",
