@@ -28,6 +28,7 @@ const cssnext = global.require('postcss-cssnext');
 		}
 	});
 
+	// 处理拖拽事件
 	dragDrop(function(file){
 
 		

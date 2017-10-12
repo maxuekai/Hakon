@@ -9,19 +9,32 @@ const url = require('url');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+let mainWindow,loading;
 
 function createWindow () {
-	// Create the browser window.
-	mainWindow = new BrowserWindow({width: 800, height: 600});
 
-	// and load the index.html of the app.
-	// mainWindow.loadURL(url.format({
-	//   pathname: path.join(__dirname, '/dist/index.html'),
-	//   protocol: 'file:',
-	//   slashes: true
-	// }));
-	mainWindow.loadURL('http://127.0.0.1:8080', {});
+  	loading = new BrowserWindow({show: false, frame: false});
+
+	loading.once('show', () => {
+		// Create the browser window.
+		mainWindow = new BrowserWindow({width: 800, height: 600, show: false});
+	    mainWindow.webContents.once('dom-ready', () => {
+	      	console.log('main loaded');
+	      	mainWindow.show();
+	      	loading.hide();
+	      	loading.close();
+	    });
+	    // and load the index.html of the app.
+		// mainWindow.loadURL(url.format({
+		//   pathname: path.join(__dirname, '/dist/index.html'),
+		//   protocol: 'file:',
+		//   slashes: true
+		// }));
+		mainWindow.loadURL('http://127.0.0.1:8080', {});
+	});
+	loading.loadURL(`file://${__dirname}/dist/loading.html`);
+	loading.show();
+	
 	// mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
 	mainWindow.webContents.executeJavaScript(`
 	    var path = require('path');
