@@ -4,46 +4,46 @@ const fs = global.require('fs');
 const path = global.require('path');
 const postcss = global.require('postcss');
 const imagemin = global.require('imagemin');
-const imageminJpegtran = global.require('imagemin-jpegtran');
+const imageminMozjpeg = global.require('imagemin-mozjpeg');
 const imageminPngquant = global.require('imagemin-pngquant');
+const imageminGifsicle = global.require('imagemin-gifsicle');
 import log from './hp-log';
+import sprites from './hp-css-sprite';
 
 export { handleCss, handleHtml, handleImage };
 /**
 * 操作css
 *
 * @param {string} stylesheetPath
+* @param {object} mode
 */
-function handleCss(stylesheetPath, plugins) {
+function handleCss(stylesheetPath, mode) {
 
 	let pathObj = path.parse(stylesheetPath);
 	let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
 	existsFloder(basePath, path.join(basePath, '/dist/css/'));
 	log(stylesheetPath);
-	fs.readFile(stylesheetPath, 'utf-8', function(err, css){
-		postcss(plugins)	// 处理css
+
+	let promise = new Promise((resolve, reject) => {
+		sprites(stylesheetPath, mode, resolve, reject);
+	});
+	promise.then(css => {
+		postcss(mode.plugins)
 			.process(css, { from: stylesheetPath, to: basePath + '/dist/css/' + pathObj.base })
 			.then(result => {
 				fs.writeFile(path.join(basePath, '/dist/css/', pathObj.base), result.css, function(err){
 					if(err) {
 						log(err.toString(), 'fail');
 					}else {
-						// 压缩雪碧图
-						imagemin([path.join(basePath, '/dist/img/spr*.png')],path.join(basePath, '/dist/img/'), {
-							plugins: [
-								imageminJpegtran(),
-								imageminPngquant({quality: '65-80'})
-							]
-						}).then(() => {
-							log('success: ' + path.join(basePath, '/dist/css/', pathObj.base), 'success');
-						});
+						log('success', 'success');
 					}
 					if(result.map)
 						fs.writeFileSync(basePath + '/dist/css/' + pathObj.base + '.map', result.map);
 				});
 			});
+	}, error => {
+		log(error.toString(), 'fail');
 	});
-
 }
 
 /**
@@ -76,6 +76,7 @@ function handleHtml(htmlPath) {
 * 操作图片
 *
 * @param {Array} image
+* @param {boolen} imgQuant
 */
 function handleImage(image, imgQuant) {
 	let pathObj = path.parse(image[0].path);
@@ -92,8 +93,9 @@ function handleImage(image, imgQuant) {
 		}
 		imagemin(imagePath, path.join(outputPath), {
 			plugins: [
-				imageminJpegtran(),
-				imageminPngquant({quality: '65-80'})
+				imageminMozjpeg({quality: '85'}),
+				imageminGifsicle(),
+				imageminPngquant({floyd: 1, quality: '60'})
 			]
 		}).then(() => {
 			log('success', 'success');

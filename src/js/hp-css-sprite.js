@@ -1,33 +1,41 @@
 'use strict';
 
 const postcss = global.require('postcss');
+const sprites = global.require('postcss-sprites');
 const path = global.require('path');
+const fs = global.require('fs');
+const imagemin = global.require('imagemin');
+const imageminPngquant = global.require('imagemin-pngquant');
 
 
 /**
 * 配置 sprite 信息
 *
-* @param {string} basePath
-* @param {string} mode
+* @param {string} stylesheetPath
+* @param {object} mode
+* @param {function} cb
+* @param {function} error
 */
-export default function(basePath, mode) {
+export default function(stylesheetPath, mode, cb, error) {
 
+	let pathObj = path.parse(stylesheetPath);
+	let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
 	let opts = {
 		stylesheetPath: path.join(basePath, '/dist/css/'),
 		spritePath: './dist/img',
 		basePath: basePath,
 		spritesmith: {
-			padding: 0,
+			padding: 10,
 			// algorithm: 'top-down'
 		},
-		filterBy: function(image) {
+		filterBy: image => {
 			// console.log(image);
 			if(!~image.url.indexOf('/slice/')) {
 				return Promise.reject();
 			}
 			return Promise.resolve();
 		},
-		groupBy: function(image) {
+		groupBy: image => {
 			let name = /\/slice\/([0-9.A-Za-z]+)\//.exec(image.url);
 			if(!name){
 				return Promise.reject(new Error('Not a shape image'));
@@ -35,21 +43,11 @@ export default function(basePath, mode) {
 			return Promise.resolve(name[1]);
 		},
 		hooks: {
-			onUpdateRule: function(rule, token, image) {
-				// ['width', 'height'].forEach(function(prop){
-				// 	let value = image.coords[prop];
-				// 	if(image.retina) {
-				// 		value /= image.ratio;
-				// 	}
-				// 	rule.insertAfter(rule.last, postcss.decl({
-				// 		prop: prop,
-				// 		value: value + 'px'
-				// 	}));
-				// });
+			onUpdateRule: (rule, token, image) => {
 
 				let backgroundSize, backgroundPosition;
 
-				if(mode == 'pc') {
+				if(mode.spriteMode == 'pc') {
 
 					let backgroundPositionX = -image.coords.x,
 						backgroundPositionY = -image.coords.y;
@@ -64,7 +62,7 @@ export default function(basePath, mode) {
 						value: backgroundPositionX + 'px ' + backgroundPositionY + 'px'
 					});
 
-				}else if(mode == 'rem') {
+				}else if(mode.spriteMode == 'rem') {
 
 					let backgroundPositionX = -(image.coords.x / 100),
 						backgroundPositionY = -(image.coords.y / 100);
@@ -120,7 +118,7 @@ export default function(basePath, mode) {
 
 				
 			},
-			onSaveSpritesheet: function(opts, spritesheet) {
+			onSaveSpritesheet: (opts, spritesheet) => {
 				let filenameChunks = spritesheet.groups.concat(spritesheet.extension);
 				if(filenameChunks.length > 1)
 					return path.join(basePath, opts.spritePath, 'spr-' + filenameChunks[0] + '.' + filenameChunks[1]);
@@ -130,7 +128,29 @@ export default function(basePath, mode) {
 		}
 	};
 
-	return opts;
+	fs.readFile(stylesheetPath, 'utf-8', (err, css) => {
+		if(err) {
+			error(err);
+		}else {
+			postcss([sprites(opts)])	// 处理雪碧图
+				.process(css, { from: stylesheetPath, to: basePath + '/dist/css/' + pathObj.base })
+				.then(result => {
+					if(mode.imgQuant) {
+						// 压缩雪碧图
+						imagemin([path.join(basePath, '/dist/img/spr*.png')],path.join(basePath, '/dist/img/'), {
+							plugins: [
+								imageminPngquant({quality: '70'})
+							]
+						}).then(() => {
+							cb(result.css);
+						});
+					}else {
+						cb(result.css);
+					}
+					
+				});
+		}
+	});
 	
 }
 

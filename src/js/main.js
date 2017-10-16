@@ -1,9 +1,8 @@
 'use strict';
 
 import dragDrop from './hp-drag';
-import spriteCss from './hp-css-sprite';
+// import spriteCss from './hp-css-sprite';
 import { handleCss, handleHtml, handleImage } from './hp-handlefile';
-const sprites = global.require('postcss-sprites');
 const path = global.require('path');
 const autoprefixer = global.require('autoprefixer');
 const atImport = global.require('postcss-import');
@@ -36,10 +35,8 @@ const cssnext = global.require('postcss-cssnext');
 
 		if(/css/.test(pathObj.ext)) {	// 传入 css 文件
 
-			let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
-			let opts = spriteCss(basePath, mode.spriteMode);
-			mode.plugins.unshift(sprites(opts));
-			handleCss(file[0].path, mode.plugins);
+			// let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
+			handleCss(file[0].path, mode);
 
 		}else if(/html/.test(pathObj.ext)) {	// 传入 html 文件
 
