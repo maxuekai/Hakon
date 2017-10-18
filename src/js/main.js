@@ -1,7 +1,6 @@
 'use strict';
 
 import dragDrop from './hp-drag';
-// import spriteCss from './hp-css-sprite';
 import { handleCss, handleHtml, handleImage } from './hp-handlefile';
 const path = global.require('path');
 const autoprefixer = global.require('autoprefixer');
@@ -35,7 +34,6 @@ const cssnext = global.require('postcss-cssnext');
 
 		if(/css/.test(pathObj.ext)) {	// 传入 css 文件
 
-			// let basePath = pathObj.dir.split(path.sep).slice(0,-1).join(path.sep);
 			handleCss(file[0].path, mode);
 
 		}else if(/html/.test(pathObj.ext)) {	// 传入 html 文件
