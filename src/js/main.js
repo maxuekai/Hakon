@@ -79,7 +79,8 @@ function pluginsAssemble() {
 			case 'cssnext':
 				mode.plugins.push(cssnext({
 					features: {
-						autoprefixer: false
+						autoprefixer: false,
+						rem: false
 					}
 				}));
 				break;

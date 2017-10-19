@@ -25,12 +25,12 @@ function createWindow () {
 	      	loading.close();
 	    });
 	    // and load the index.html of the app.
-		// mainWindow.loadURL(url.format({
-		//   pathname: path.join(__dirname, '/dist/index.html'),
-		//   protocol: 'file:',
-		//   slashes: true
-		// }));
-		mainWindow.loadURL('http://127.0.0.1:8080', {});
+		mainWindow.loadURL(url.format({
+		  pathname: path.join(__dirname, '/dist/index.html'),
+		  protocol: 'file:',
+		  slashes: true
+		}));
+		// mainWindow.loadURL('http://127.0.0.1:8080', {});
 	});
 	loading.loadURL(`file://${__dirname}/dist/loading.html`);
 	loading.show();
@@ -48,7 +48,7 @@ function createWindow () {
 	//   `);
 
 	// Open the DevTools.
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function () {

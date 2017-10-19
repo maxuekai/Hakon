@@ -52,10 +52,10 @@ export default function(stylesheetPath, mode, cb, error) {
 					let backgroundPositionX = -image.coords.x,
 						backgroundPositionY = -image.coords.y;
 
-					backgroundSize = postcss.decl({
-						prop: 'background-size',
-						value: 'auto'
-					});
+					// backgroundSize = postcss.decl({
+					// 	prop: 'background-size',
+					// 	value: 'auto'
+					// });
 
 					backgroundPosition = postcss.decl({
 						prop: 'background-position',
@@ -113,7 +113,8 @@ export default function(stylesheetPath, mode, cb, error) {
 
 				rule.insertAfter(token, backgroundImage);
 				rule.insertAfter(backgroundImage, backgroundPosition);
-				rule.insertAfter(backgroundPosition, backgroundSize);
+				if(mode.spriteMode != 'pc')
+					rule.insertAfter(backgroundPosition, backgroundSize);
 				rule.insertAfter(backgroundPosition, backgroundRepeat);
 
 				
