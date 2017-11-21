@@ -25,7 +25,7 @@ export default function(stylesheetPath, mode, cb, error) {
 		spritePath: './dist/img',
 		basePath: basePath,
 		spritesmith: {
-			padding: 10,
+			padding: 5,
 			// algorithm: 'top-down'
 		},
 		filterBy: image => {
@@ -59,7 +59,7 @@ export default function(stylesheetPath, mode, cb, error) {
 
 					backgroundPosition = postcss.decl({
 						prop: 'background-position',
-						value: backgroundPositionX + 'px ' + backgroundPositionY + 'px'
+						value: `${backgroundPositionX}px ${backgroundPositionY}px`
 					});
 
 				}else if(mode.spriteMode == 'rem') {
@@ -69,12 +69,12 @@ export default function(stylesheetPath, mode, cb, error) {
 
 					backgroundSize = postcss.decl({
 						prop: 'background-size',
-						value: (image.spriteWidth / 100) + 'rem ' + 'auto'
+						value: `${(image.spriteWidth / 100)}rem auto`
 					});
 
 					backgroundPosition = postcss.decl({
 						prop: 'background-position',
-						value: backgroundPositionX + 'rem ' + backgroundPositionY + 'rem'
+						value: `${backgroundPositionX}rem ${backgroundPositionY}rem`
 					});
 
 				}else {
@@ -91,19 +91,20 @@ export default function(stylesheetPath, mode, cb, error) {
 
 					backgroundSize = postcss.decl({
 						prop: 'background-size',
-						value: backgroundSizeX + '% ' + backgroundSizeY + '%'
+						value: `${backgroundSizeX}% ${backgroundSizeY}%`
 					});
 
 					backgroundPosition = postcss.decl({
 						prop: 'background-position',
-						value: backgroundPositionX + '% ' + backgroundPositionY + '%'
+						value: `${backgroundPositionX}% ${backgroundPositionY}%`
 					});
 
 				}
 
+				let timestamp = new Date().getTime();
 				let backgroundImage = postcss.decl({
 					prop: 'background-image',
-					value: 'url(' + image.spriteUrl + ')'
+					value: `url(${image.spriteUrl}?${timestamp})`
 				});
 
 				let backgroundRepeat = postcss.decl({
@@ -140,7 +141,7 @@ export default function(stylesheetPath, mode, cb, error) {
 						// 压缩雪碧图
 						imagemin([path.join(basePath, '/dist/img/spr*.png')],path.join(basePath, '/dist/img/'), {
 							plugins: [
-								imageminPngquant({quality: '70'})
+								imageminPngquant({quality: '100'})
 							]
 						}).then(() => {
 							cb(result.css);
