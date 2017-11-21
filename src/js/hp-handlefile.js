@@ -93,9 +93,9 @@ function handleImage(image, imgQuant) {
 		}
 		imagemin(imagePath, path.join(outputPath), {
 			plugins: [
-				imageminMozjpeg({quality: '85'}),
+				imageminMozjpeg({quality: '100'}),
 				imageminGifsicle(),
-				imageminPngquant({floyd: 1, quality: '60'})
+				imageminPngquant({floyd: 1, quality: '100'})
 			]
 		}).then(() => {
 			log('success', 'success');
