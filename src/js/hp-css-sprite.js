@@ -25,7 +25,7 @@ export default function(stylesheetPath, mode, cb, error) {
 		spritePath: './dist/img',
 		basePath: basePath,
 		spritesmith: {
-			padding: 10,
+			padding: 5,
 			// algorithm: 'top-down'
 		},
 		filterBy: image => {
