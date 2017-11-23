@@ -9,11 +9,11 @@
 export default function(log, type) {
 
 	if(type == 'success') {
-		document.querySelector('.drag-log .succ').innerHTML += log;
+		document.querySelector('.drag-log .succ').innerHTML += '<br/>' + log;
 	}else if(type == 'fail') {
-		document.querySelector('.drag-log .fail').innerHTML += log;
+		document.querySelector('.drag-log .fail').innerHTML += '<br/>' + log;
 	}else {
-		document.querySelector('.drag-log .normal').innerHTML += log;
+		document.querySelector('.drag-log .normal').innerHTML += '<br/>' + log;
 	}
 
 }
