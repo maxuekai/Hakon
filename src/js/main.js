@@ -8,11 +8,11 @@ const atImport = global.require('postcss-import');
 const cssnano = global.require('cssnano');
 const cssnext = global.require('postcss-cssnext');
 
-(function(){
+(function() {
 
 	// 获取用户所选选项
 	let options = localStorage.getItem('options');
-	if(options) {
+	if (options) {
 		options.split(',').forEach(function(index) {
 			document.querySelectorAll('.option')[index].checked = true;
 		});
@@ -20,40 +20,43 @@ const cssnext = global.require('postcss-cssnext');
 
 	let mode = pluginsAssemble();
 
-	document.addEventListener('click', function(event){
-		if(event.target.className == 'option') {
+	document.addEventListener('click', function(event) {
+		if (event.target.className == 'option') {
 			mode = pluginsAssemble();
 		}
 	});
 
 	// 处理拖拽事件
-	dragDrop(function(file){
+	dragDrop(function(file) {
 
-		
-		let pathObj = path.parse(file[0].path);
-
-		if(/css/.test(pathObj.ext)) {	// 传入 css 文件
-
-			handleCss(file[0].path, mode);
-
-		}else if(/html/.test(pathObj.ext)) {	// 传入 html 文件
-
-			handleHtml(file[0].path);
-
-		}else {
-
-			handleImage(file, mode.imgQuant);
-
+		for(let i = 0; i < file.length; i++) {
+			let pathObj = path.parse(file[i].path);
+			console.log(pathObj);
+			if (/css/.test(pathObj.ext)) { // 传入 css 文件
+    
+				handleCss(file[i].path, mode);
+    
+			} else if (/html/.test(pathObj.ext)) { // 传入 html 文件
+    
+				handleHtml(file[i].path);
+    
+			} else if(/jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga/.test(pathObj.ext)) {
+    
+				handleImage(file, mode.imgQuant);
+				return;
+    
+			} 
 		}
 		
+
 	});
 
 })();
 
 /**
-* 按需配置插件,并保存用户所选选项
-*
-*/
+ * 按需配置插件,并保存用户所选选项
+ *
+ */
 function pluginsAssemble() {
 
 	let checkbox = document.querySelectorAll('.menu-options .option');
@@ -63,10 +66,10 @@ function pluginsAssemble() {
 		plugins: []
 	};
 	let options = [];
-	for(let i = 0; i < checkbox.length; i++) {
-		if(checkbox[i].checked) {
+	for (let i = 0; i < checkbox.length; i++) {
+		if (checkbox[i].checked) {
 			options.push(i);
-			switch(checkbox[i].value) {
+			switch (checkbox[i].value) {
 			case 'pc':
 				mode.spriteMode = 'pc';
 				break;
