@@ -45,7 +45,7 @@ const cssnext = global.require('postcss-cssnext');
 				handleImage(file, mode.imgQuant);
 				return;
     
-			}
+			} 
 		}
 		
 
