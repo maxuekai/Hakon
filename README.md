@@ -1,37 +1,27 @@
-## Csshp
+# hakon
 
-Use for merge sprites and compress css and so on...
+> hakon for css developer
 
-### Development
+## Build Setup
 
-```js
+``` bash
+# install dependencies
+npm install
 
-// install dependencies
-npm i
-
-// open webpack dev server
+# serve with hot reload at localhost:8080
 npm run dev
 
-// close the browser window, and open a new command line
-// start the electron service
-npm start
+# build for production with minification
+npm run build
 
+# build for production and view the bundle analyzer report
+npm run build --report
+
+# run unit tests
+npm run unit
+
+# run all tests
+npm test
 ```
 
-### Package
-
-Package with electron-packager
-
-```js
-
-// install electron-packager in global
-npm i -g electron-packager
-
-// package
-npm run package
-
-```
-
-### More
-
-More features are coming!
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
