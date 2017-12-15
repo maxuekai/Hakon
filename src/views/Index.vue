@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import Body from '@/components/Body';
+import Header from '@/components/index/Header';
+import Footer from '@/components/index/Footer';
+import Body from '@/components/index/Body';
 
 export default {
   components: {
