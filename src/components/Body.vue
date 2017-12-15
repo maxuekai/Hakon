@@ -2,23 +2,42 @@
     <div>
         <div class="layout-body">
             <div class="wp-drag">
-                <div class="drag-main drop-hover">将文件拖拽到此区域</div>
+                <div class="drag-main" v-bind:class=" {'drop-hover': dropHover} " @dragover.prevent="dropHover = true" @drop.prevent="drop">
+                    将文件拖拽到此区域
+                </div>
                 <div class="drag-log">
-                    <p class="normal"></p>
-                    <p class="succ"></p>
-                    <p class="fail"></p>
+                    <p v-for="item in tips" v-bind:class="item.type">
+                        {{ item.txt }}
+                    </p>
                 </div>
             </div>
             <div class="wp-menu">
                 <div class="menu-options">
                     <ul>
-                        <li><input type="checkbox" class="option" value="pc">雪碧图pc模式</li>
-                        <li><input type="checkbox" class="option" value="rem">雪碧图rem模式</li>
-                        <li><input type="checkbox" class="option" value="picnano">压缩图片</li>
-                        <li><input type="checkbox" class="option" value="cssnext">使用最新css</li>
-                        <li><input type="checkbox" class="option" value="autoprefixer">自动加前缀功能</li>
-                        <li><input type="checkbox" class="option" value="cssnano">压缩css</li>
-                        <li><input type="checkbox" class="option" value="@import">处理@import文件</li>
+                        <li>
+                            <input id="sprite" type="checkbox" class="option" v-model="mode.spriteRemMode">
+                            <label for="sprite">雪碧图rem模式</label>
+                        </li>
+                        <li>
+                            <input id="imgQuant" type="checkbox" class="option" v-model="mode.imgQuant">
+                            <label for="imgQuant">压缩图片</label>
+                        </li>
+                        <li>
+                            <input id="cssnext" type="checkbox" class="option" value="cssnext" v-model="mode.plugins">
+                            <label for="cssnext">使用最新css</label>
+                        </li>
+                        <li>
+                            <input id="autoprefixer" type="checkbox" class="option" value="autoprefixer" v-model="mode.plugins">
+                            <label for="autoprefixer">自动加前缀功能</label>
+                        </li>
+                        <li>
+                            <input id="cssnano" type="checkbox" class="option" value="cssnano" v-model="mode.plugins">
+                            <label for="cssnano">压缩css</label>
+                        </li>
+                        <li>
+                            <input id="import" type="checkbox" class="option" value="@import" v-model="mode.plugins">
+                            <label for="import">处理@import文件</label>
+                        </li>
                     </ul>
                 </div>
                 <div class="menu-address">
@@ -83,3 +102,66 @@ input[type=checkbox]{
     margin-bottom:10px;margin-left:-10px;
 }
 </style>
+
+<script>
+import {handleCss, handleHtml, handleImage} from '@/assets/js/hp-handlefile';
+const path = global.require('path');
+const co = global.require('co');
+export default {
+  data () {
+    return {
+      dropHover: true,
+      fileInfo: [],
+      mode: {
+        spriteRemMode: false,
+        imgQuant: false,
+        plugins: []
+      },
+      // tips:[{txt:string, type:string('succ', 'fail', 'normal')}]
+      tips: []
+    };
+  },
+  watch: {
+    mode: {
+      handler: (val) => {
+        localStorage.setItem('options', JSON.stringify(val));
+      },
+      deep: true
+    }
+  },
+  methods: {
+    async drop (e) {
+      this.dropHover = false;
+      this.tips = [];
+      this.fileInfo = e.dataTransfer.files;
+      const _this = this;
+      co(function* () {
+        let handle = [];
+        [].forEach.call(_this.fileInfo, (ele, index) => {
+          let pathObj = path.parse(ele.path);
+          _this.tips.push({
+            txt: `正在处理：${ele.path}`,
+            type: 'normal'
+          });
+          if (/css/.test(pathObj.ext)) {
+            handle.push(Promise.resolve(handleCss(ele.path, _this.mode, (result) => _this.tips.push(result))));
+          // 传入 html 文件
+          } else if (/html/.test(pathObj.ext)) {
+            handle.push(Promise.resolve(handleHtml(ele.path, (result) => _this.tips.push(result))));
+          // 传入图片
+          } else if (/jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga/.test(pathObj.ext)) {
+            handle.push(Promise.resolve(handleImage(ele.path, _this.mode.imgQuant, (result) => _this.tips.push(result))));
+          }
+        });
+        return yield handle;
+      }).then((val) => console.log(val));
+    }
+  },
+  created () {
+    let mode = localStorage.getItem('options');
+    if (mode) {
+      this.mode = JSON.parse(mode);
+    }
+  }
+};
+</script>

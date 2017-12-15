@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @drop.prevent @dragLave.prevent @dragenter.prevent @dragover.prevent>
     <router-view></router-view>
   </div>
   
