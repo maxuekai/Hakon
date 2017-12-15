@@ -2,7 +2,7 @@
 
 > hakon for css developer
 
-## Build Setup
+## Development
 
 ``` bash
 # install dependencies
@@ -13,13 +13,24 @@ yarn run dev
 
 # tune up election
 yarn start
+```
 
+## Package
+
+``` bash
 # build for production with minification
 yarn run build
 
 # build for production and view the bundle analyzer report
 yarn run build --report
 
+# package
+yarn run package
+```
+
+## Test
+
+``` bash
 # run unit tests
 yarn run unit
 
@@ -27,4 +38,6 @@ yarn run unit
 yarn test
 ```
 
-more feature coming soon.
+## More
+
+More feature coming soon.
