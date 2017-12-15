@@ -1,12 +1,16 @@
 <template>
     <div>
-      模块管理工具
+      <module-body></module-body>
     </div>
 </template>
 
 <script>
-
-export default {};
+import Body from '@/components/moduleManage/Body';
+export default {
+  components: {
+    'module-body': Body
+  }
+};
 </script>
 
 <style scoped>

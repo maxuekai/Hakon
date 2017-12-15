@@ -30,7 +30,7 @@ function createWindow () {
 		//   protocol: 'file:',
 		//   slashes: true
 		// }));
-		mainWindow.loadURL('http://127.0.0.1:8080', {});
+		mainWindow.loadURL('http://127.0.0.1:8080/moduleManageTool', {});
 	});
 	loading.loadURL(`file://${__dirname}/dist/loading.html`);
 	loading.show();
