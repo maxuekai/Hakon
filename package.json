@@ -1,5 +1,5 @@
 {
-  "name": "Hakon",
+  "name": "hakon",
   "version": "1.0.0",
   "description": "hakon for css developer",
   "author": "maxuekai",
@@ -31,7 +31,6 @@
     "babel-preset-stage-2": "^6.22.0",
     "chai": "^4.1.2",
     "chalk": "^2.0.1",
-    "co": "^4.6.0",
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.0",

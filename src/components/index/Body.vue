@@ -106,7 +106,7 @@ input[type=checkbox]{
 <script>
 import {handleCss, handleHtml, handleImage} from '@/assets/js/hp-handlefile';
 const path = global.require('path');
-const co = global.require('co');
+// const co = global.require('co');
 export default {
   data () {
     return {
@@ -118,7 +118,12 @@ export default {
         plugins: []
       },
       // tips:[{txt:string, type:string('succ', 'fail', 'normal')}]
-      tips: []
+      tips: [],
+      handling: false,
+      progress: {
+        index: 0,
+        length: 0
+      }
     };
   },
   watch: {
@@ -134,27 +139,41 @@ export default {
       this.dropHover = false;
       this.tips = [];
       this.fileInfo = e.dataTransfer.files;
-      const _this = this;
-      co(function* () {
-        let handle = [];
-        [].forEach.call(_this.fileInfo, (ele, index) => {
-          let pathObj = path.parse(ele.path);
-          _this.tips.push({
-            txt: `正在处理：${ele.path}`,
-            type: 'normal'
-          });
-          if (/css/.test(pathObj.ext)) {
-            handle.push(Promise.resolve(handleCss(ele.path, _this.mode, (result) => _this.tips.push(result))));
-          // 传入 html 文件
-          } else if (/html/.test(pathObj.ext)) {
-            handle.push(Promise.resolve(handleHtml(ele.path, (result) => _this.tips.push(result))));
-          // 传入图片
-          } else if (/jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga/.test(pathObj.ext)) {
-            handle.push(Promise.resolve(handleImage(ele.path, _this.mode.imgQuant, (result) => _this.tips.push(result))));
-          }
-        });
-        return yield handle;
-      }).then((val) => console.log(val));
+      this.progress.index = 0;
+      this.progress.length = this.fileInfo.length - 1;
+      this.handlefile();
+    },
+    async handlefile () {
+      let pro = this.progress;
+      console.log(pro.index);
+      let filePath = this.fileInfo[pro.index].path;
+      let pathObj = path.parse(filePath);
+      let ext = pathObj.ext;
+      this.tips.push({
+        txt: `正在处理：${filePath}`,
+        type: 'normal'
+      });
+      new Promise((resolve, reject) => {
+        if (/css/.test(ext)) {
+          handleCss(filePath, this.mode, resolve, reject);
+        } else if (/html/.test(ext)) {
+          handleHtml(filePath, resolve, reject);
+        } else if (/jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga/.test(ext)) {
+          handleImage(filePath, this.mode.imgQuant, resolve, reject);
+        }
+      }).then(res => {
+        this.tips.push(res);
+        if (pro.index < pro.length) {
+          ++this.progress.index;
+          this.handlefile();
+        }
+      }, err => {
+        this.tips.push(err);
+        if (pro.index < pro.length) {
+          ++this.progress.index;
+          this.handlefile();
+        }
+      });
     }
   },
   created () {

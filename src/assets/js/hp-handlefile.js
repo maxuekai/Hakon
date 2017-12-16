@@ -23,8 +23,9 @@ export {
  * @param {string} stylesheetPath
  * @param {object} mode:{spriteRemMode, imgQuant, plugins}
  * @param {function} cback
+ * @param {function} cerr
  */
-function handleCss (stylesheetPath, mode, cback) {
+function handleCss (stylesheetPath, mode, cback, cerr) {
   let pathObj = path.parse(stylesheetPath);
   let basePath = pathObj.dir.split(path.sep).slice(0, -1).join(path.sep);
   existsFloder(basePath, path.join(basePath, '/dist/css/'));
@@ -63,16 +64,17 @@ function handleCss (stylesheetPath, mode, cback) {
         to: basePath + '/dist/css/' + pathObj.base
       })
       .then(result => {
-        fs.writeFile(path.join(basePath, '/dist/css/', pathObj.base), result.css, err => {
+        fs.writeFile(path.join(basePath, '/dist/css/', pathObj.base), result.css, 'utf8', (err) => {
           if (err) {
-            cback({txt: err.toString(), type: 'fail'});
+            cerr({txt: err.toString(), type: 'fail'});
           } else {
+            console.log('hello');
             cback({txt: `成功处理${stylesheetPath}`, type: 'succ'});
           }
         });
       });
   }, error => {
-    cback({txt: error.toString(), type: 'fail'});
+    cerr({txt: error.toString(), type: 'fail'});
   });
 }
 
@@ -81,19 +83,20 @@ function handleCss (stylesheetPath, mode, cback) {
  *
  * @param {string} htmlPath
  * @param {function} cback
+ * @param {function} cerr
  */
-function handleHtml (htmlPath, cback) {
+function handleHtml (htmlPath, cback, cerr) {
   let pathObj = path.parse(htmlPath);
   let basePath = pathObj.dir;
   existsFloder(basePath, htmlPath);
   fs.readFile(htmlPath, function (err, data) {
     if (err) {
-      cback({txt: err.toString(), type: 'fail'});
+      cerr({txt: err.toString(), type: 'fail'});
     } else {
       let html = data;
       fs.writeFile(path.join(basePath, '/dist/', pathObj.base), html.toString(), function (err) {
         if (err) {
-          cback({txt: err.toString(), type: 'fail'});
+          cerr({txt: err.toString(), type: 'fail'});
         } else {
           cback({txt: `成功处理：${path.join(basePath, '/dist/', pathObj.base)}`, type: 'succ'});
         }
@@ -108,8 +111,9 @@ function handleHtml (htmlPath, cback) {
  * @param {string} imagePath
  * @param {boolen} imgQuant
  * @param {function} cback
+ * @param {function} cerr
  */
-function handleImage (imagePath, imgQuant, cback) {
+function handleImage (imagePath, imgQuant, cback, cerr) {
   let pathObj = path.parse(imagePath);
   let basePath = pathObj.dir.split(path.sep).slice(0, -1).join(path.sep);
   let outputPath = pathObj.dir.split(path.sep);
@@ -139,13 +143,14 @@ function handleImage (imagePath, imgQuant, cback) {
       output.write(d);
     });
     input.on('error', function (err) {
-      throw err;
+      cerr({txt: err.toString(), type: 'fail'});
     });
     input.on('end', function () {
       output.end();
       cback({txt: `成功处理：${path.join(outputPath, pathObj.base)}`, type: 'succ'});
     });
   }
+  // return [{txt: `成功处理：${imagePath}`, type: 'succ'}];
 }
 
 /**
