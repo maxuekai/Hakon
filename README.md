@@ -1,37 +1,43 @@
-## Csshp
+# hakon
 
-Use for merge sprites and compress css and so on...
+> hakon for css developer
 
-### Development
+## Development
 
-```js
+``` bash
+# install dependencies
+yarn
 
-// install dependencies
-npm i
+# serve with hot reload at localhost:8080
+yarn run dev
 
-// open webpack dev server
-npm run dev
-
-// close the browser window, and open a new command line
-// start the electron service
-npm start
-
+# tune up election
+yarn start
 ```
 
-### Package
+## Package
 
-Package with electron-packager
+``` bash
+# build for production with minification
+yarn run build
 
-```js
+# build for production and view the bundle analyzer report
+yarn run build --report
 
-// install electron-packager in global
-npm i -g electron-packager
-
-// package
-npm run package
-
+# package
+yarn run package
 ```
 
-### More
+## Test
 
-More features are coming!
+``` bash
+# run unit tests
+yarn run unit
+
+# run all tests
+yarn test
+```
+
+## More
+
+More feature coming soon.
