@@ -5,6 +5,9 @@
   "main": "app.js",
   "author": "maxuekai",
   "license": "MIT",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
   "devDependencies": {
     "babel-eslint": "^8.0.3",
     "debug": "^3.1.0",
@@ -15,6 +18,11 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "http": "^0.0.0",
-    "koa": "^2.4.1"
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-cors": "^0.0.16",
+    "koa-logger": "^3.1.0",
+    "koa-router": "^7.3.0",
+    "mongoose": "^4.13.7"
   }
 }
