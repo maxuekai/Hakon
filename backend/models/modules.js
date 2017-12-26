@@ -13,6 +13,9 @@ const Schema = mongoose.Schema({
   css: {
     type: String
   },
+  js: {
+    type: String
+  },
   category: {
     type: String,
     default: 'common'

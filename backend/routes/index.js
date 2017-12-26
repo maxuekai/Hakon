@@ -1,19 +1,18 @@
 const Router = require('koa-router');
 
 const user = require('../controls/user');
+const mod = require('../controls/modules');
 
 const router = new Router();
 
-router.post('/register', function (ctx, next) {
-  let data = ctx.request.query;
-  user.register(data.name, data.pwd);
-  ctx.body = {code: '200', txt: 'success'};
-});
+router.post('/register', user.register);
 
-router.get('/login', function (ctx, next) {
-  let data = ctx.request.query;
-  user.login(data.name, data.pwd);
-  ctx.body = {code:'200'};
-});
+router.post('/login', user.login);
+
+router.post('/uploadCode', mod.upload);
+
+router.get('/getAllModules', mod.getAllModules);
+
+router.get('/getModule', mod.getModule);
 
 module.exports = router;
