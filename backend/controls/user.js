@@ -4,7 +4,7 @@ const User  = require('../models/user');
 
 async function login(ctx, next) {
   try {
-    let data = ctx.request.query;
+    let data = ctx.request.body;
     const user =  await User.findOne({ name: data.name, password: data.password });
     if(user) {
       ctx.body = {
@@ -15,7 +15,8 @@ async function login(ctx, next) {
     }else {
       ctx.body = {
         code: 404,
-        txt: 'no one'
+        txt: 'no one',
+        ctx: ctx
       };
     }
   }catch(err) {
@@ -28,7 +29,7 @@ async function login(ctx, next) {
 
 async function register(ctx, next) {
   try {
-    let data = ctx.reuqest.query;
+    let data = ctx.reuqest.body;
     await new User({
       name: data.name,
       password: data.password,

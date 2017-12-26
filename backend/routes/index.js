@@ -5,14 +5,14 @@ const mod = require('../controls/modules');
 
 const router = new Router();
 
-router.post('/register', user.register);
+router.post('/api/inline/user/register', user.register);
 
-router.post('/login', user.login);
+router.post('/api/inline/user/login', user.login);
 
-router.post('/uploadCode', mod.upload);
+router.post('/api/inline/module/uploadCode', mod.upload);
 
-router.get('/getAllModules', mod.getAllModules);
+router.get('/api/inline/module/getAllModules', mod.getAllModules);
 
-router.get('/getModule', mod.getModule);
+router.get('/api/inline/module/getModule', mod.getModule);
 
 module.exports = router;

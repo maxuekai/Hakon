@@ -4,7 +4,7 @@ const Mod  = require('../models/modules');
 
 async function upload(ctx, next) {
   try{
-    let data = ctx.request.query;
+    let data = ctx.request.body;
     new Mod({ 
       name: data.name, 
       html: data.html,
@@ -50,6 +50,7 @@ async function getModule(ctx, next) {
         txt: 'success',
         dta: mod
       };
+      return {code:200};
     }else {
       ctx.body = {
         code: 404,

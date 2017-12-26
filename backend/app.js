@@ -1,12 +1,16 @@
 const Koa = require('koa');
-const cors = require('koa-cors');
+const cors = require('koa2-cors');
 const logger = require('koa-logger');
 const bodyparser = require('koa-bodyparser');
 const mongoose = require('mongoose');
 const router = require('./routes');
 const app = new Koa();
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://127.0.0.1:8080',
+  headers: '*',
+  Methods: '*'
+}));
 app.use(bodyparser());
 app.use(logger());
 app.use(router.routes());
