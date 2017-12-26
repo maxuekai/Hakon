@@ -4,10 +4,29 @@
   </div>
 </template>
 
-<script>
-
-</script>
-
 <style scoped>
 
 </style>
+
+<script>
+  import { login } from '@/api';
+
+  export default {
+    data () {
+      return {
+
+      };
+    },
+    methods: {
+
+    },
+    async created () {
+      try {
+        const user = await login('hello', '123456');
+        console.log(user.data);
+      } catch (err) {
+        console.error(err);
+      };
+    }
+  };
+</script>
