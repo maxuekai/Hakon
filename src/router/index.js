@@ -11,6 +11,10 @@ export default new Router({
       component: resolve => require(['@/views/Index'], resolve)
     },
     {
+      path: '/moduleManageTool',
+      component: resolve => require(['@/views/ModuleManage'], resolve)
+    },
+    {
       path: '*',
       component: resolve => require(['@/views/404'], resolve)
     }
