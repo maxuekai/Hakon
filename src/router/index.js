@@ -5,18 +5,22 @@ Vue.use(Router);
 
 export default new Router({
   mode: 'history',
-  routes: [
-    {
-      path: '/',
+  routes: [{
+    path: '/',
+    component: resolve => require(['@/views/Common'], resolve),
+    children: [{
+      path: '/index',
       component: resolve => require(['@/views/Index'], resolve)
     },
     {
       path: '/moduleManageTool',
       component: resolve => require(['@/views/ModuleManage'], resolve)
-    },
-    {
-      path: '*',
-      component: resolve => require(['@/views/404'], resolve)
     }
+    ]
+  },
+  {
+    path: '*',
+    component: resolve => require(['@/views/404'], resolve)
+  }
   ]
 });

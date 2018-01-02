@@ -1,15 +1,12 @@
 <template>
     <div>
-      <module-body></module-body>
+      <h2>mokuai</h2>
     </div>
 </template>
 
 <script>
-import Body from '@/components/moduleManage/Body';
 export default {
-  components: {
-    'module-body': Body
-  }
+
 };
 </script>
 
