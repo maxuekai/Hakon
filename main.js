@@ -18,7 +18,7 @@ function createWindow() {
 
     loading.once('show', () => {
         // Create the browser window.
-        mainWindow = new BrowserWindow({ width: 800, height: 600, show: false, frame: false, title: 'Hakon' });
+        mainWindow = new BrowserWindow({ width: 1014, height: 680, show: false, frame: false, title: 'Hakon' });
         mainWindow.webContents.once('dom-ready', () => {
             console.log('main loaded');
             mainWindow.show();

@@ -1,12 +1,15 @@
 <template>
     <div>
-      <h2>mokuai</h2>
+      <index-body></index-body>
     </div>
 </template>
 
 <script>
+import body from '@/components/moduleManage/Body';
 export default {
-
+  components: {
+    'index-body': body
+  }
 };
 </script>
 

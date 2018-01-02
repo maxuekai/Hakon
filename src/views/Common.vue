@@ -5,8 +5,12 @@
                 <module-nav></module-nav>
             </div>
             <div class="layout-main">
-                <module-bar></module-bar>
-                <router-view></router-view>
+                <divy class="layout-bar">
+                    <module-bar></module-bar>
+                </divy>
+                <div class="layout-cont">
+                    <router-view></router-view>
+                </div>
             </div>
         </div>
     </div>
@@ -19,11 +23,21 @@
     width:100vw;height: 100vh;
 }
 .layout-body .layout-aside{
-    flex: 1;
+    width:65px;
 }
 .layout-body .layout-main{
-    flex: 5;
     overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction:column;
+}
+.layout-body .layout-main .layout-bar{
+    height:50px;
+    background:#eeeeee;
+}
+.layout-body .layout-main .layout-cont{
+    flex: 1;
+    background:#eeeeee;
 }
 </style>
 
@@ -31,6 +45,7 @@
 import nav from '@/components/common/Nav';
 import bar from '@/components/common/Bar';
 export default {
+  name: 'common',
   components: {
     'module-nav': nav,
     'module-bar': bar

@@ -12,8 +12,6 @@
 <script>
   import { login } from '@/api';
 
-  const {ipcRenderer: ipc} = global.require('electron');
-
   export default {
     data () {
       return {
@@ -22,7 +20,7 @@
     },
     methods: {
       min () {
-        ipc.send('min');
+        console.log('hello');
       }
     },
     async created () {
