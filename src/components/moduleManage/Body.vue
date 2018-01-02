@@ -1,27 +1,43 @@
 <template>
   <div>
-    <h1>模块打包工具</h1>
-    <a href="javascript:;" @click="min">最小化</a>
+    <div class="layout-main">
+      <div class="layout-menu">
+        <module-menu></module-menu>
+      </div>
+      <div class="layout-cont">
+
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-
+.layout-main{
+  display:flex;
+}
+.layout-main .layout-menu{
+  width:180px;height:100%;
+}
+.layout-main .layout-cont{
+  flex: 1;height:100%;
+}
 </style>
 
 <script>
+  import menu from '@/components/moduleManage/Menu';
   import { login } from '@/api';
 
   export default {
+    components: {
+      'module-menu': menu
+    },
     data () {
       return {
 
       };
     },
     methods: {
-      min () {
-        console.log('hello');
-      }
+
     },
     async created () {
       try {
