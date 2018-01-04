@@ -43,12 +43,12 @@ async function getAllModules(ctx, next) {
 async function getModule(ctx, next) {
   try{
     let data = ctx.request.query;
-    const mod = await Mod.findOne({name: data.name});
+    const mod = await Mod.findOne({_id: data._id});
     if(mod) {
       ctx.body = {
         code: 200,
         txt: 'success',
-        dta: mod
+        data: mod
       };
       return {code:200};
     }else {
