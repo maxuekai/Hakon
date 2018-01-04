@@ -5,7 +5,7 @@
         <module-menu></module-menu>
       </div>
       <div class="layout-cont">
-
+        <module-cont></module-cont>
       </div>
     </div>
   </div>
@@ -17,35 +17,23 @@
 }
 .layout-main .layout-menu{
   width:180px;height:100%;
+  position: relative;
 }
 .layout-main .layout-cont{
-  flex: 1;height:100%;
+  height:100%;width:calc(100vw - 180px - 65px);
+  box-sizing:border-box;
+  position: relative;
 }
 </style>
 
 <script>
   import menu from '@/components/moduleManage/Menu';
-  import { login } from '@/api';
+  import cont from '@/components/moduleManage/Content';
 
   export default {
     components: {
-      'module-menu': menu
-    },
-    data () {
-      return {
-
-      };
-    },
-    methods: {
-
-    },
-    async created () {
-      try {
-        const user = await login('hello', '123456');
-        console.log(user.data);
-      } catch (err) {
-        console.error(err);
-      };
+      'module-menu': menu,
+      'module-cont': cont
     }
   };
 </script>

@@ -13,4 +13,15 @@ export default {
 
 <style>
 @import 'assets/css/reset.css';
+/* 设置滚动条的样式 */
+::-webkit-scrollbar-track-piece{
+  width:6px;background-color:rgba(0,0,0,0);
+  display:none;
+}
+::-webkit-scrollbar{
+  width:6px;height:6px;background:rgba(0,0,0,0);
+}
+::-webkit-scrollbar-thumb{
+  width:6px;height:6px;background:#666;cursor:pointer;
+}
 </style>

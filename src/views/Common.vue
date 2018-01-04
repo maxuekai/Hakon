@@ -5,9 +5,9 @@
                 <module-nav></module-nav>
             </div>
             <div class="layout-main">
-                <divy class="layout-bar">
+                <div class="layout-bar">
                     <module-bar></module-bar>
-                </divy>
+                </div>
                 <div class="layout-cont">
                     <router-view></router-view>
                 </div>
@@ -34,10 +34,12 @@
 .layout-body .layout-main .layout-bar{
     height:50px;
     background:#eeeeee;
+    position: relative;
 }
 .layout-body .layout-main .layout-cont{
     flex: 1;
     background:#eeeeee;
+    position: relative;
 }
 </style>
 

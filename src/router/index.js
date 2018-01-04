@@ -9,18 +9,23 @@ export default new Router({
     path: '/',
     component: resolve => require(['@/views/Common'], resolve),
     children: [{
-      path: '/',
+      path: '/index/',
       component: resolve => require(['@/views/Index'], resolve)
     },
     {
-      path: '/moduleManageTool',
-      component: resolve => require(['@/views/ModuleManage'], resolve)
+      path: '/moduleManageTool/',
+      component: resolve => require(['@/views/ModuleManage'], resolve),
+      children: [{
+        path: '/moduleManageTool/:moduleId',
+        name: 'moduleList',
+        component: resolve => require(['@/views/ModuleManage'], resolve)
+      }]
+    },
+    {
+      path: '*',
+      component: resolve => require(['@/views/404'], resolve)
     }
     ]
-  },
-  {
-    path: '*',
-    component: resolve => require(['@/views/404'], resolve)
   }
   ]
 });

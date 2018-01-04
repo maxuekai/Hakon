@@ -5,12 +5,9 @@
         </div>
         <div class="nav">
             <ul>
-                <li><router-link to="/">工具</router-link></li>
+                <li><router-link to="/index">工具</router-link></li>
                 <li><router-link to="/moduleManageTool">模板</router-link></li>
             </ul>
-        </div>
-        <div class="menu">
-
         </div>
     </div>
 </template>
@@ -38,8 +35,12 @@
     line-height:66px;
 }
 .nav ul li a{
+    display:block;width:100%;height:100%;
     font-size:12px;color:#535353;
     text-decoration:none;
+}
+.nav ul li a.router-link-active{
+    background:#eeeeee;
 }
 
 </style>

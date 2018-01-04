@@ -34,8 +34,6 @@ export function getAllModules () {
   return axios.get('/api/inline/module/getAllModules');
 }
 
-export function getModule (name) {
-  return axios.get('/api/inline/module/getModule', {
-    name: name
-  });
+export function getModule (_id) {
+  return axios.get(`/api/inline/module/getModule?_id=${_id}`);
 }
