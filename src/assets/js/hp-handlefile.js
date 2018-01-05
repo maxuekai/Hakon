@@ -12,11 +12,7 @@ const autoprefixer = global.require('autoprefixer');
 const atImport = global.require('postcss-import');
 const cssnano = global.require('cssnano');
 const cssnext = global.require('postcss-cssnext');
-export {
-  handleCss,
-  handleHtml,
-  handleImage
-};
+
 /**
  * 操作css
  *
@@ -25,7 +21,7 @@ export {
  * @param {function} cback
  * @param {function} cerr
  */
-function handleCss (stylesheetPath, mode, cback, cerr) {
+export function handleCss (stylesheetPath, mode, cback, cerr) {
   let pathObj = path.parse(stylesheetPath);
   let basePath = pathObj.dir.split(path.sep).slice(0, -1).join(path.sep);
   existsFloder(basePath, path.join(basePath, '/dist/css/'));
@@ -69,7 +65,7 @@ function handleCss (stylesheetPath, mode, cback, cerr) {
             cerr({txt: err.toString(), type: 'fail'});
           } else {
             console.log('hello');
-            cback({txt: `成功处理${stylesheetPath}`, type: 'succ'});
+            cback({txt: `成功处理：${stylesheetPath}`, type: 'succ'});
           }
         });
       });
@@ -85,7 +81,7 @@ function handleCss (stylesheetPath, mode, cback, cerr) {
  * @param {function} cback
  * @param {function} cerr
  */
-function handleHtml (htmlPath, cback, cerr) {
+export function handleHtml (htmlPath, cback, cerr) {
   let pathObj = path.parse(htmlPath);
   let basePath = pathObj.dir;
   existsFloder(basePath, htmlPath);
@@ -113,7 +109,7 @@ function handleHtml (htmlPath, cback, cerr) {
  * @param {function} cback
  * @param {function} cerr
  */
-function handleImage (imagePath, imgQuant, cback, cerr) {
+export function handleImage (imagePath, imgQuant, cback, cerr) {
   let pathObj = path.parse(imagePath);
   let basePath = pathObj.dir.split(path.sep).slice(0, -1).join(path.sep);
   let outputPath = pathObj.dir.split(path.sep);

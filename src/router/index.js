@@ -26,6 +26,10 @@ export default new Router({
       component: resolve => require(['@/views/404'], resolve)
     }
     ]
+  },
+  {
+    path: '*',
+    component: resolve => require(['@/views/404'], resolve)
   }
   ]
 });

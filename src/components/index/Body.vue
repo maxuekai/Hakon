@@ -1,16 +1,6 @@
 <template>
     <div>
         <div class="layout-body">
-            <div class="wp-drag">
-                <div class="drag-main" v-bind:class=" {'drop-hover': dropHover} " @dragover.prevent="dropHover = true" @drop.prevent="drop">
-                    将文件拖拽到此区域
-                </div>
-                <div class="drag-log">
-                    <p v-for="item in tips" v-bind:class="item.type">
-                        {{ item.txt }}
-                    </p>
-                </div>
-            </div>
             <div class="wp-menu">
                 <div class="menu-options">
                     <ul>
@@ -43,8 +33,19 @@
                 <div class="menu-address">
                     <h3>保存到</h3>
                     <div class="local">
-                        <input type="checkbox" value="local" checked>本地
+                        <input id="local" type="checkbox" value="local" checked>
+                        <label for="local">本地</label>
                     </div>
+                </div>
+            </div>
+            <div class="wp-drag">
+                <div class="drag-main" v-bind:class=" {'drop-hover': dropHover} " @dragover.prevent="dropHover = true" @drop.prevent="drop">
+                    <p>将文件拖拽到此区域</p>
+                </div>
+                <div class="drag-log">
+                    <p v-for="item in tips" v-bind:class="item.type">
+                        {{ item.txt }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -54,28 +55,37 @@
 <style scoped>
 .layout-body{
     display:flex;
+    height:calc(100vh - 50px);
 }
 .layout-body .wp-drag{
-    flex:2;height:100vh;
+    flex:1;height:100%;
     border-right:1px solid #CDCDCD;
     box-sizing:border-box;padding:24px;
-    position: relative;
+    position: relative;background:#454545;
 }
 .layout-body .wp-menu{
-    flex:1;height:100vh;
+    width:180px;height:100%;
+}
+.layout-body .wp-menu label{
+    font-size:12px;color:#6e6e6e;
 }
 .wp-drag .drag-main{
-    width:50%;height:50vh;
-    color:#CDCDCD;border:3px dashed;font-size:24px;
-    text-align:center;line-height:50vh;
+    width:84%;height:80%;
+    border:4px dashed #4d4d4d;
+    text-align:center;
     position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);
     opacity:0;
+}
+.wp-drag .drag-main p{
+    position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);
+    font-size:24px;color:#999999;
 }
 .wp-drag .drag-main.drop-hover{
     opacity:1;
 }
 .drag-log p{
     font-weight:normal;font-size:14px;line-height:1.5;
+    color:#999999;
 }
 .drag-log .succ{
     color:#45BF55;
@@ -84,8 +94,8 @@
     color:#F22233;
 }
 .layout-body .wp-menu .menu-options{
-    padding:20px;font-size:14px;height:60vh;
-    border-bottom:1px solid #CDCDCD;box-sizing:border-box;
+    padding:20px;font-size:14px;height:78%;
+    box-sizing:border-box;
 }
 .menu-options ul li{
     margin-bottom:10px;
@@ -94,19 +104,21 @@ input[type=checkbox]{
     vertical-align:-2px;
 }
 .layout-body .wp-menu .menu-address{
-    padding:10px 20px;font-size:14px;
-    height:40vh;box-sizing: border-box;
+    padding:18px 0;font-size:14px;
+    width:146px;margin:0 auto;
+    border-top:2px solid #dadada;
 }
 .menu-address h3{
     font-size:14px;font-weight:normal;
-    margin-bottom:10px;margin-left:-10px;
+    margin-bottom:10px;
+    color:#6e6e6e;
 }
 </style>
 
 <script>
 import {handleCss, handleHtml, handleImage} from '@/assets/js/hp-handlefile';
 const path = global.require('path');
-// const co = global.require('co');
+
 export default {
   data () {
     return {
