@@ -129,10 +129,7 @@
       };
     },
     watch: {
-      '$route': 'fetchData',
-      'html': 'show',
-      'css': 'show',
-      'js': 'show'
+      '$route': 'fetchData'
     },
     methods: {
       show () {

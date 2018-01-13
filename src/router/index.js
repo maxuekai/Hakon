@@ -6,14 +6,26 @@ Vue.use(Router);
 export default new Router({
   mode: 'hash',
   routes: [{
+    path: '/manage',
+    component: resolve => require(['@/views/Manage'], resolve)
+  },
+  {
+    path: '/login',
+    component: resolve => require(['@/views/Login'], resolve)
+  },
+  {
+    path: '/register',
+    component: resolve => require(['@/views/Register'], resolve)
+  },
+  {
     path: '/',
     component: resolve => require(['@/views/Common'], resolve),
     children: [{
-      path: '/index/',
+      path: '/index',
       component: resolve => require(['@/views/Index'], resolve)
     },
     {
-      path: '/moduleManageTool/',
+      path: '/moduleManageTool',
       component: resolve => require(['@/views/ModuleManage'], resolve),
       children: [{
         path: '/moduleManageTool/:moduleId',
@@ -24,8 +36,7 @@ export default new Router({
     {
       path: '*',
       component: resolve => require(['@/views/404'], resolve)
-    }
-    ]
+    }]
   },
   {
     path: '*',

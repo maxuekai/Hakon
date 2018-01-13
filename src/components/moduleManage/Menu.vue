@@ -7,12 +7,15 @@
         </li>
       </ul>
     </div>
+    <div class="layout-act">
+      <a href="javascript:;" @click="upload">调起webview</a>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .menu-list{
-  height:calc(100vh - 50px);
+  height:calc(100vh - 100px);
 }
 .menu-list ul li{
   width:100%;height:34px;
@@ -34,6 +37,7 @@
 
 <script>
   import { getAllModules } from '@/api';
+  const {ipcRenderer: ipc} = global.require('electron');
 
   export default {
     data () {
@@ -47,12 +51,16 @@
           const res = await getAllModules();
           if (res.data.code === 200) {
             this.moduleList = res.data.data;
+            console.log(this.moduleList);
           } else {
             console.error('error');
           }
         } catch (err) {
           console.error(err);
         };
+      },
+      upload () {
+        ipc.send('webview');
       }
     },
     created () {

@@ -36,18 +36,6 @@ function createWindow() {
     loading.loadURL(`file://${__dirname}/dist/loading.html`);
     loading.show();
 
-    // mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
-    // mainWindow.webContents.executeJavaScript(`
-    //     var path = require('path');
-    //     module.paths.push(path.resolve('node_modules'));
-    //     module.paths.push(path.resolve('../node_modules'));
-    //     module.paths.push(path.resolve(__dirname, '..', '..', 'electron', 'node_modules'));
-    //     module.paths.push(path.resolve(__dirname, '..', '..', 'electron.asar', 'node_modules'));
-    //     module.paths.push(path.resolve(__dirname, '..', '..', 'app', 'node_modules'));
-    //     module.paths.push(path.resolve(__dirname, '..', '..', 'app.asar', 'node_modules'));
-    //     path = undefined;
-    //   `);
-
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
 
@@ -61,12 +49,17 @@ function createWindow() {
     ipcMain.on('min', e => mainWindow.minimize());
     ipcMain.on('max', e => {
         if (mainWindow.isMaximized()) {
-            mainWindow.unmaximize()
+            mainWindow.unmaximize();
         } else {
-            mainWindow.maximize()
+            mainWindow.maximize();
         }
     });
     ipcMain.on('close', e => mainWindow.close());
+    ipcMain.on('webview', e => {
+        let webview = new BrowserWindow({ width: 1014, height: 680, show: true, frame: true, autoHideMenuBar:true });
+        webview.loadURL('http://127.0.0.1:8080/#/login/', {});
+        webview.webContents.openDevTools();
+    });
 }
 
 // This method will be called when Electron has finished
