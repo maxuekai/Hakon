@@ -1,11 +1,11 @@
 
-
 const User  = require('../models/user');
+const md5 = require('md5');
 
 async function login(ctx, next) {
   try {
     let data = ctx.request.body;
-    const user =  await User.findOne({ name: data.name, password: data.password });
+    const user =  await User.findOne({ name: data.name, password: md5(data.password) });
     if(user) {
       ctx.body = {
         code: 200,
@@ -29,10 +29,10 @@ async function login(ctx, next) {
 
 async function register(ctx, next) {
   try {
-    let data = ctx.reuqest.body;
+    let data = ctx.request.body;
     await new User({
       name: data.name,
-      password: data.password,
+      password: md5(data.password),
     }).save();
     ctx.body = {
       code: 200,

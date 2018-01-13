@@ -19,6 +19,9 @@ const Schema = mongoose.Schema({
   category: {
     type: String,
     default: 'common'
+  },
+  author: {
+    type: String
   }
 });
 
