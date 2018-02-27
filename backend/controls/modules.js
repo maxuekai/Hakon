@@ -65,8 +65,34 @@ async function getModule(ctx, next) {
   }
 }
 
+async function deleteModule(ctx, next) {
+  try{
+    let data = ctx.request.body;
+    const mod = await Mod.remove({_id: data._id});
+    if(mod) {
+      ctx.body = {
+        code: 200,
+        txt: 'success',
+        data: mod
+      };
+      return {code:200};
+    }else {
+      ctx.body = {
+        code: 404,
+        txt: 'no this module'
+      };
+    }
+  }catch(err) {
+    ctx.body = {
+      code: 500,
+      txt: err
+    };
+  }
+}
+
 module.exports = {
   upload: upload,
   getAllModules: getAllModules,
-  getModule: getModule
+  getModule: getModule,
+  deleteModule: deleteModule
 };

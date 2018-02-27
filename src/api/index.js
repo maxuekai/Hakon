@@ -37,3 +37,9 @@ export function getAllModules () {
 export function getModule (_id) {
   return axios.get(`/api/inline/module/getModule?_id=${_id}`);
 }
+
+export function deleteModule (_id) {
+  return axios.post('/api/inline/module/deleteModule', {
+    _id: _id
+  });
+}

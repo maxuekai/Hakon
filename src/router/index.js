@@ -6,8 +6,18 @@ Vue.use(Router);
 export default new Router({
   mode: 'hash',
   routes: [{
-    path: '/manage',
-    component: resolve => require(['@/views/Manage'], resolve)
+    path: '/admin',
+    component: resolve => require(['@/views/Admin'], resolve),
+    children: [
+      {
+        path: '/admin/index',
+        component: resolve => require(['@/components/admin/Manage'], resolve)
+      },
+      {
+        path: '/admin/edit/:moduleId?',
+        name: 'edit',
+        component: resolve => require(['@/components/admin/Edit'], resolve)
+      }]
   },
   {
     path: '/login',

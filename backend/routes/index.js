@@ -15,4 +15,6 @@ router.get('/api/inline/module/getAllModules', mod.getAllModules);
 
 router.get('/api/inline/module/getModule', mod.getModule);
 
+router.post('/api/inline/module/deleteModule', mod.deleteModule);
+
 module.exports = router;
