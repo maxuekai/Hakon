@@ -1,14 +1,15 @@
 <template>
   <div>
     <div class="layout-body">
-      <div class="layout-login">
-        <div class="login-hd">
+      <div class="layout-register">
+        <div class="register-hd">
           <h1>HAKON</h1>
         </div>
-        <div class="login-bd">
+        <div class="register-bd">
           <input type="text" placeholder="用户名" v-model="name">
           <input type="password" placeholder="密码" v-model="pwd">
           <button @click.enter="signUp">注册</button>
+          <router-link class="login" to="/admin/login">登录</router-link>
         </div>
       </div>
     </div>
@@ -21,7 +22,7 @@
   background:#454545;
   position: relative;
 }
-.layout-login{
+.layout-register{
   width:400px;height:300px;
   background:#fff;
   position: absolute;left:50%;top:50%;
@@ -29,21 +30,21 @@
   box-sizing:border-box;
   padding:0 20px;
 }
-.layout-login .login-hd{
+.layout-register .register-hd{
   height:100px;line-height:100px;
 }
-.layout-login .login-hd h1{
+.layout-register .register-hd h1{
   font-size:24px;text-align:center;
 }
-.login-bd input{
+.register-bd input{
   display: block;width:100%;height:30px;
   margin-bottom:25px;
   text-indent:10px;
 }
-.login-bd input:focus{
+.register-bd input:focus{
   outline-color:#eee;
 }
-.login-bd button{
+.register-bd button{
   width:100%;height:40px;
   outline:none;border:none;
   background: #454545;
@@ -51,16 +52,28 @@
   cursor: pointer;
   transition:.2s;
 }
-.login-bd button:hover{
+.register-bd button:hover{
   background:#636363;
 }
-.login-bd button:active{
+.register-bd button:active{
   transform:scale(.95);
+}
+.register-bd .login{
+  font-size:14px;color:#454545;
+  float: right;text-decoration:none;
+  margin-top:10px;
+  opacity:0.6;
+  transition:.2s;
+}
+.register-bd .login:hover{
+  opacity:1;
 }
 </style>
 
 <script>
   import { register } from '@/api';
+  const electron = global.require('electron');
+
   export default {
     data () {
       return {
@@ -73,10 +86,21 @@
         try {
           const res = await register(this.name, this.pwd);
           console.log(res);
+          const session = electron.remote.getCurrentWindow().webContents.session;
+          session.cookies.get({url: 'http://127.0.0.1:3600/api/inline/user/register'}, (error, cookies) => {
+            console.log(error, cookies);
+          });
         } catch (err) {
           console.error(err);
         }
       }
+    },
+    created () {
+      const session = electron.remote.getCurrentWindow().webContents.session;
+      session.cookies.get({url: 'http://127.0.0.1:3600/testcookie'}, (error, cookies) => {
+        console.log(error);
+        console.log(cookies);
+      });
     }
   };
 </script>

@@ -8,7 +8,10 @@
         <div class="edit-bd">
           <div class="bd-item bd-category">
             <h3>类别</h3>
-            <input type="text" v-model="category" placeholder="类别">
+            <input type="text" v-model.trim="category" placeholder="类别">
+            <select name="category" v-model.trim="category">
+              <option v-for="item in categoryList" :key="item">{{ item }}</option>
+            </select>
           </div>
           <div class="bd-item bd-html">
             <h3>html</h3>
@@ -22,6 +25,10 @@
             <h3>js</h3>
             <textarea name="js" v-model="js"></textarea>
           </div>
+        </div>
+        <div class="edit-fd">
+          <button class="btn" @click="back">返回</button>
+          <button class="btn" @click="upload">保存</button>
         </div>
       </div>
     </div>
@@ -37,7 +44,7 @@
 }
 .layout-edit{
   width:80%;
-  margin:0 auto;padding:20px 24px 10px;box-sizing:border-box;
+  margin:0 auto;padding:20px 24px 20px;box-sizing:border-box;
   background: #ffffff;
 }
 .edit-hd{
@@ -68,18 +75,36 @@
 .edit-bd .bd-item textarea:focus{
   outline-color: #cccccc;
 }
+
+.edit-fd .btn{
+  display: inline-block;vertical-align:middle;
+  width:80px;height:24px;
+  line-height:24px;text-align:center;
+  background: #eeeeee;
+  font-size:12px;color:#535353;
+  text-decoration:none;
+  cursor: pointer;
+  border:none;outline:none;
+  margin-right:10px;
+}
+.edit-fd .btn:hover{
+  background:#454545;
+  color:#fff;
+}
 </style>
 
 <script>
-  import { getModule } from '@/api';
+  import { getModule, getAllCategory, uploadCode, updateCode } from '@/api';
   export default {
     data () {
       return {
+        id: '',
         name: '',
         category: '',
         html: '',
         css: '',
-        js: ''
+        js: '',
+        categoryList: []
       };
     },
     methods: {
@@ -97,13 +122,59 @@
         } catch (err) {
           console.error(err);
         }
+      },
+      async fetchCategory () {
+        try {
+          const res = await getAllCategory();
+          if (res) {
+            this.categoryList = res.data.data;
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      async upload () {
+        try {
+          let res;
+          if (this.id) {
+            res = await updateCode(this.id, this.name, this.html, this.css, this.js, this.category);
+          } else {
+            res = await uploadCode(this.name, this.html, this.css, this.js, this.category);
+          }
+          if (res.data.code === 200) {
+            alert('保存成功');
+            this.back();
+          } else {
+            alert('保存失败');
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      // async update () {
+      //   try {
+      //     const res = await updateCode(this.id, this.name, this.html, this.css, this.js, this.category);
+      //     console.log(res);
+      //     if (res.data.code === 200) {
+      //       alert('保存成功');
+      //       this.back();
+      //     } else {
+      //       alert('保存失败');
+      //     }
+      //   } catch (err) {
+      //     console.error(err);
+      //   }
+      // },
+      back () {
+        this.$router.go(-1);
       }
     },
     created () {
-      let id = this.$route.params.moduleId;
-      if (id) {
-        this.fetchData(id);
+      this.id = this.$route.params.moduleId;
+      if (this.id) {
+        this.fetchData(this.id);
       }
+      this.fetchCategory();
     }
   };
 </script>

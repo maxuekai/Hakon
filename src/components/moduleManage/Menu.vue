@@ -2,7 +2,7 @@
   <div>
     <div class="menu-list">
       <ul>
-        <li v-for="item in moduleList">
+        <li v-for="item in moduleList" :key="item._id">
           <router-link :to="{ name: 'moduleList', params: { moduleId: item._id }}">{{item.name}}</router-link>
         </li>
       </ul>

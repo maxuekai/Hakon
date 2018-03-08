@@ -8,7 +8,7 @@
         </div>
         <div class="manage-bd">
           <ul>
-            <li v-for="item in moduleList">
+            <li v-for="item in moduleList" :key="item._id">
               <p class="module-name">{{item.name}}</p>
               <div class="module-act">
                 <router-link title="编辑" class="icon icon-edit" :to="{ name: 'edit', params: { moduleId: item._id } }"></router-link>
@@ -115,7 +115,6 @@
           const res = await getAllModules();
           if (res.data.code === 200) {
             this.moduleList = res.data.data;
-            console.log(this.moduleList);
           } else {
             console.error('error');
           }

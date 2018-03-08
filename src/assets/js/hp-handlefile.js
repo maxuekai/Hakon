@@ -64,7 +64,6 @@ export function handleCss (stylesheetPath, mode, cback, cerr) {
           if (err) {
             cerr({txt: err.toString(), type: 'fail'});
           } else {
-            console.log('hello');
             cback({txt: `成功处理：${stylesheetPath}`, type: 'succ'});
           }
         });

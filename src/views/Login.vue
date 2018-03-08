@@ -9,6 +9,7 @@
           <input type="text" placeholder="用户名" v-model="name">
           <input type="password" placeholder="密码" v-model="pwd">
           <button @click.enter="signIn">登录</button>
+          <router-link class="register" to="/admin/register">注册</router-link>
         </div>
       </div>
     </div>
@@ -57,10 +58,20 @@
 .login-bd button:active{
   transform:scale(.95);
 }
+.login-bd .register{
+  font-size:14px;color:#454545;
+  float: right;text-decoration:none;
+  margin-top:10px;
+  opacity:0.6;
+  transition:.2s;
+}
+.login-bd .register:hover{
+  opacity:1;
+}
 </style>
 
 <script>
-  import { login } from '@/api';
+  import { login, checkLogin } from '@/api';
   export default {
     data () {
       return {
@@ -76,6 +87,17 @@
         } catch (err) {
           console.error(err);
         }
+      }
+    },
+    async created () {
+      try {
+        const res = await checkLogin();
+        console.log(res.data);
+        if (res.data.code === 200) {
+          this.$router.push('/admin/index');
+        }
+      } catch (err) {
+        console.error(err);
       }
     }
   };

@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { ipcMain } = require('electron');
+const { ipcMain, session } = require('electron');
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
@@ -57,8 +57,9 @@ function createWindow() {
     ipcMain.on('close', e => mainWindow.close());
     ipcMain.on('webview', e => {
         let webview = new BrowserWindow({ width: 1014, height: 680, show: true, frame: true, autoHideMenuBar:true });
-        webview.loadURL('http://127.0.0.1:8080/#/admin/index', {});
+        webview.loadURL('http://127.0.0.1:8080/#/admin/register', {});
         webview.webContents.openDevTools();
+        // console.log(session);
     });
 }
 

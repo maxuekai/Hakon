@@ -17,15 +17,15 @@ export default new Router({
         path: '/admin/edit/:moduleId?',
         name: 'edit',
         component: resolve => require(['@/components/admin/Edit'], resolve)
+      },
+      {
+        path: '/admin/login',
+        component: resolve => require(['@/views/Login'], resolve)
+      },
+      {
+        path: '/admin/register',
+        component: resolve => require(['@/views/Register'], resolve)
       }]
-  },
-  {
-    path: '/login',
-    component: resolve => require(['@/views/Login'], resolve)
-  },
-  {
-    path: '/register',
-    component: resolve => require(['@/views/Register'], resolve)
   },
   {
     path: '/',
