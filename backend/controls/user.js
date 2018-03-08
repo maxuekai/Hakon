@@ -7,6 +7,19 @@ async function login(ctx, next) {
     let data = ctx.request.body;
     const user =  await User.findOne({ name: data.name, password: md5(data.password) });
     if(user) {
+      ctx.cookies.set('usr', data.name, {
+        domain: '127.0.0.1',
+        path: '/',
+        httpOnly: false,  // 是否只用于http请求中获取
+        overwrite: true  // 是否允许重写
+      });
+      ctx.cookies.set('pwd', md5(data.password), {
+        domain: '127.0.0.1',
+        path: '/',
+        httpOnly: false,  // 是否只用于http请求中获取
+        overwrite: true  // 是否允许重写
+      });
+      console.log(ctx.cookies.get('usr'),ctx.cookies.get('pwd'));
       ctx.body = {
         code: 200,
         txt: 'success',
@@ -22,7 +35,7 @@ async function login(ctx, next) {
   }catch(err) {
     ctx.body = {
       code: 500,
-      txt: err
+      txt: err.toString()
     };
   }
 }
@@ -34,6 +47,20 @@ async function register(ctx, next) {
       name: data.name,
       password: md5(data.password),
     }).save();
+    console.log(data.name, data.password);
+    ctx.cookies.set('usr', data.name, {
+      domain: '127.0.0.1',
+      path: '/',
+      httpOnly: false,  // 是否只用于http请求中获取
+      overwrite: true  // 是否允许重写
+    });
+    ctx.cookies.set('pwd', md5(data.password), {
+      domain: '127.0.0.1',
+      path: '/',
+      httpOnly: false,  // 是否只用于http请求中获取
+      overwrite: true  // 是否允许重写
+    });
+    console.log(ctx.cookies.get('usr'),ctx.cookies.get('pwd'));
     ctx.body = {
       code: 200,
       txt: 'success'
@@ -41,12 +68,40 @@ async function register(ctx, next) {
   }catch(err) {
     ctx.body = {
       code: 500,
-      txt: err
+      txt: err.toString()
+    };
+  }
+}
+
+async function checkLogin(ctx, next){
+  try {
+    let usr = ctx.cookies.get('usr');
+    let pwd = ctx.cookies.get('pwd');
+    if(usr && pwd) {
+      const user = await User.findOne({ name: usr, password: pwd });
+      if(user) {
+        ctx.body = {
+          code: 200,
+          txt: 'logined',
+          data: user
+        };
+      }
+    }else {
+      ctx.body = {
+        code: 404,
+        txt: 'no login'
+      };
+    }
+  }catch(err) {
+    ctx.body = {
+      code: 500,
+      txt: err.toString()
     };
   }
 }
 
 module.exports = {
   login: login,
-  register: register
+  register: register,
+  checkLogin: checkLogin
 };

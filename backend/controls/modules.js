@@ -2,11 +2,11 @@
 
 const Mod  = require('../models/modules');
 
-async function upload(ctx, next) {
+async function uploadCode(ctx, next) {
   try{
     let data = ctx.request.body;
-    new Mod({ 
-      name: data.name, 
+    await new Mod({ 
+      name: data.name,
       html: data.html,
       css: data.css,
       js: data.js,
@@ -16,10 +16,41 @@ async function upload(ctx, next) {
       code: 200,
       txt: 'success'
     };
+    return next();
   }catch(err) {
     ctx.body = {
       code: 500,
-      txt: err
+      txt: err.toString()
+    };
+  }
+}
+
+async function updateCode(ctx, next) {
+  try{
+    ctx.status = 200;
+    let data = ctx.request.body;
+    await Mod.findById(data._id, (error, doc) => {
+      if(error) {
+        ctx.body = {
+          code: 404,
+          txt: 'not found module'
+        };
+      }
+      doc.name = data.name;
+      doc.html = data.html;
+      doc.css = data.css;
+      doc.js = data.js;
+      doc.category = data.category;
+      doc.save();
+    });
+    ctx.body = {
+      code: 200,
+      txt: 'success'
+    };
+  }catch(err) {
+    ctx.body = {
+      code: 500,
+      txt: err.toString()
     };
   }
 }
@@ -35,7 +66,7 @@ async function getAllModules(ctx, next) {
   }catch(err) {
     ctx.body = {
       code: 500,
-      txt: err
+      txt: err.toString()
     };
   }
 }
@@ -50,7 +81,7 @@ async function getModule(ctx, next) {
         txt: 'success',
         data: mod
       };
-      return {code:200};
+      return next();
     }else {
       ctx.body = {
         code: 404,
@@ -60,7 +91,7 @@ async function getModule(ctx, next) {
   }catch(err) {
     ctx.body = {
       code: 500,
-      txt: err
+      txt: err.toString()
     };
   }
 }
@@ -75,24 +106,50 @@ async function deleteModule(ctx, next) {
         txt: 'success',
         data: mod
       };
-      return {code:200};
+      return next();
     }else {
       ctx.body = {
         code: 404,
         txt: 'no this module'
       };
+      return next();
     }
   }catch(err) {
     ctx.body = {
       code: 500,
-      txt: err
+      txt: err.toString()
+    };
+  }
+}
+
+async function getAllCategory(ctx, next) {
+  try{
+    const mod = await Mod.distinct('category');
+    if(mod) {
+      ctx.body = {
+        code: 200,
+        txt: 'success',
+        data: mod
+      };
+    }else {
+      ctx.body = {
+        code: 404,
+        txt: 'no category'
+      };
+    }
+  }catch(err) {
+    ctx.body = {
+      code: 500,
+      txt: err.toString()
     };
   }
 }
 
 module.exports = {
-  upload: upload,
+  uploadCode: uploadCode,
+  updateCode: updateCode,
   getAllModules: getAllModules,
   getModule: getModule,
-  deleteModule: deleteModule
+  deleteModule: deleteModule,
+  getAllCategory: getAllCategory
 };

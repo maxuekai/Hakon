@@ -21,7 +21,8 @@ const Schema = mongoose.Schema({
     default: 'common'
   },
   author: {
-    type: String
+    type: String,
+    default: 'admin'
   }
 });
 

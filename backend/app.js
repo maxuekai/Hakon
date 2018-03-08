@@ -8,12 +8,14 @@ const app = new Koa();
 
 app.use(cors({
   origin: 'http://127.0.0.1:8080',
+  credentials: true,
   headers: '*',
   Methods: '*'
 }));
 app.use(bodyparser());
 app.use(logger());
 app.use(router.routes());
+app.use(router.allowedMethods());
 
 mongoose.connect('mongodb://127.0.0.1:27017/hakon');
 const db = mongoose.connection;
