@@ -105,10 +105,10 @@
 .layout-preview .icon-slideUpDown{
   position: absolute;top:10px;right:10px;
   width:30px;height:30px;
-  background:url(/src/assets/img/icon-up.png);
+  background:url(~img/icon-up.png);
 }
 .layout-preview.fullscreen .icon-slideUpDown{
-  background:url(/src/assets/img/icon-down.png);
+  background:url(~img/icon-down.png);
 }
 .layout-preview iframe{
   width:100%;height:100%;
@@ -136,6 +136,7 @@
         let iframe = document.getElementById('frame');
         let idoc = iframe.contentWindow.document;
         idoc.open();
+        console.log(this.css, this.html, this.js);
         idoc.write(`<style>${this.css}</style>${this.html}<script>${this.js}<\/script>`);
         idoc.close();
       },
@@ -153,6 +154,7 @@
             this.html = data.html;
             this.css = data.css;
             this.js = data.js;
+            this.show();
           }
         } catch (err) {
           console.error(err);

@@ -26,8 +26,6 @@ export default function (stylesheetPath, mode, cb, error) {
       // algorithm: 'top-down'
     },
     filterBy: image => {
-      // console.log(image);
-      console.log(this);
       if (!~image.url.indexOf('/slice/')) {
         return Promise.reject(new Error('error'));
       }

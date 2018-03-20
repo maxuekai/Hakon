@@ -71,8 +71,8 @@
 </style>
 
 <script>
-  import { register } from '@/api';
-  const electron = global.require('electron');
+  import { register, checkLogin } from '@/api';
+  // const electron = global.require('electron');
 
   export default {
     data () {
@@ -85,22 +85,31 @@
       async signUp () {
         try {
           const res = await register(this.name, this.pwd);
-          console.log(res);
-          const session = electron.remote.getCurrentWindow().webContents.session;
-          session.cookies.get({url: 'http://127.0.0.1:3600/api/inline/user/register'}, (error, cookies) => {
-            console.log(error, cookies);
-          });
+          // const session = electron.remote.getCurrentWindow().webContents.session;
+          // session.cookies.get({url: 'http://127.0.0.1:3600/api/inline/user/register'}, (error, cookies) => {
+          //   console.log(error, cookies);
+          // });
+          if (res.data.code === 200) {
+            alert('注册成功');
+            this.$router.push('/admin/index');
+          } else {
+            alert('用户名或密码出错');
+          }
         } catch (err) {
           console.error(err);
+          alert('网络异常，请稍后重试');
         }
       }
     },
-    created () {
-      const session = electron.remote.getCurrentWindow().webContents.session;
-      session.cookies.get({url: 'http://127.0.0.1:3600/testcookie'}, (error, cookies) => {
-        console.log(error);
-        console.log(cookies);
-      });
+    async created () {
+      try {
+        const res = await checkLogin();
+        if (res.data.code === 200) {
+          this.$router.push('/admin/index');
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 </script>

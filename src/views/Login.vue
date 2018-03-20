@@ -9,7 +9,7 @@
           <input type="text" placeholder="用户名" v-model="name">
           <input type="password" placeholder="密码" v-model="pwd">
           <button @click.enter="signIn">登录</button>
-          <router-link class="register" to="/admin/register">注册</router-link>
+          <!-- <router-link class="register" to="/admin/register">注册</router-link> -->
         </div>
       </div>
     </div>
@@ -83,16 +83,21 @@
       async signIn () {
         try {
           const res = await login(this.name, this.pwd);
-          console.log(res);
+          if (res.data.code === 200) {
+            alert('登录成功');
+            this.$router.push('/admin/index');
+          } else {
+            alert('用户名或密码出错');
+          }
         } catch (err) {
           console.error(err);
+          alert('网络错误，请稍后重试');
         }
       }
     },
     async created () {
       try {
         const res = await checkLogin();
-        console.log(res.data);
         if (res.data.code === 200) {
           this.$router.push('/admin/index');
         }

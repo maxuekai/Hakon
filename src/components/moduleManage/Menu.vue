@@ -51,7 +51,6 @@
           const res = await getAllModules();
           if (res.data.code === 200) {
             this.moduleList = res.data.data;
-            console.log(this.moduleList);
           } else {
             console.error('error');
           }

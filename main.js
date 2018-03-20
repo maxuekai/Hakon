@@ -57,9 +57,8 @@ function createWindow() {
     ipcMain.on('close', e => mainWindow.close());
     ipcMain.on('webview', e => {
         let webview = new BrowserWindow({ width: 1014, height: 680, show: true, frame: true, autoHideMenuBar:true });
-        webview.loadURL('http://127.0.0.1:8080/#/admin/register', {});
+        webview.loadURL('http://127.0.0.1:8080/#/admin/login', {});
         webview.webContents.openDevTools();
-        // console.log(session);
     });
 }
 

@@ -2,9 +2,9 @@
     <div>
         <div class="handle-bar">
             <ul>
-                <li><a href="javascript:;" class="icon-min" @click="min">最小化</a></li>
-                <li><a href="javascript:;" class="icon-max" @click="max">最大化</a></li>
-                <li><a href="javascript:;" class="icon-close" @click="close">关闭</a></li>
+                <li @click="min"><a href="javascript:;" class="icon-min">最小化</a></li>
+                <li @click="max"><a href="javascript:;" class="icon-max">最大化</a></li>
+                <li @click="close"><a href="javascript:;" class="icon-close">关闭</a></li>
             </ul>
         </div>
     </div>
@@ -25,6 +25,10 @@
     width:60px;height:50px;
     line-height:50px;text-align:center;
     -webkit-app-region: no-drag;
+    cursor: pointer;
+}
+.handle-bar ul li:hover{
+    background:rgba(165, 165, 165, 0.5);
 }
 .handle-bar ul li a{
     display:inline-flex;
@@ -32,13 +36,13 @@
     justify-content: center;align-items:center;
 }
 .handle-bar ul li .icon-min{
-    background:url(/src/assets/img/icon-min.png);
+    background:url(~img/icon-min.png);
 }
 .handle-bar ul li .icon-max{
-    background:url(/src/assets/img/icon-max.png);
+    background:url(~img/icon-max.png);
 }
 .handle-bar ul li .icon-close{
-    background:url(/src/assets/img/icon-close.png);
+    background:url(~img/icon-close.png);
 }
 </style>
 

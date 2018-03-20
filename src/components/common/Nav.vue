@@ -19,7 +19,7 @@
 .icon-logo{
     display: block;
     width:40px;height:9px;
-    background: url(/src/assets/img/logo.png);
+    background: url(~img/logo.png);
     margin:20px auto;
 }
 .nav{
@@ -41,6 +41,9 @@
 }
 .nav ul li a.router-link-active{
     background:#eeeeee;
+}
+.nav ul li a:hover{
+    background:rgba(238,238,238,0.8);
 }
 
 </style>
