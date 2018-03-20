@@ -8,14 +8,14 @@ async function login(ctx, next) {
     const user =  await User.findOne({ name: data.name, password: md5(data.password) });
     if(user) {
       ctx.cookies.set('usr', data.name, {
-        domain: '127.0.0.1',
-        path: '/',
+        // domain: '127.0.0.1',
+        // path: '/',
         httpOnly: false,  // 是否只用于http请求中获取
         overwrite: true  // 是否允许重写
       });
       ctx.cookies.set('pwd', md5(data.password), {
-        domain: '127.0.0.1',
-        path: '/',
+        // domain: '127.0.0.1',
+        // path: '/',
         httpOnly: false,  // 是否只用于http请求中获取
         overwrite: true  // 是否允许重写
       });
@@ -49,14 +49,14 @@ async function register(ctx, next) {
     }).save();
     console.log(data.name, data.password);
     ctx.cookies.set('usr', data.name, {
-      domain: '127.0.0.1',
-      path: '/',
+      // domain: '127.0.0.1',
+      // path: '/',
       httpOnly: false,  // 是否只用于http请求中获取
       overwrite: true  // 是否允许重写
     });
     ctx.cookies.set('pwd', md5(data.password), {
-      domain: '127.0.0.1',
-      path: '/',
+      // domain: '127.0.0.1',
+      // path: '/',
       httpOnly: false,  // 是否只用于http请求中获取
       overwrite: true  // 是否允许重写
     });
