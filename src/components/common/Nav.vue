@@ -45,6 +45,9 @@
 .nav ul li a:hover{
     background:rgba(238,238,238,0.8);
 }
+.nav ul li a:active{
+    outline:0;
+}
 
 </style>
 
