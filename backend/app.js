@@ -17,6 +17,7 @@ app.use(logger());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+// mongodb://use:pass@ip:port/db
 mongoose.connect('mongodb://127.0.0.1:27017/hakon');
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, '连接错误:'));

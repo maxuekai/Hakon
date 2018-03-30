@@ -9,6 +9,9 @@ const Schema = mongoose.Schema({
   },
   password:{
     type: String
+  },
+  character:{
+    type: Number
   }
 });
 
