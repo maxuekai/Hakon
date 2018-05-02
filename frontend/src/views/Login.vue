@@ -9,7 +9,7 @@
           <input type="text" placeholder="用户名" v-model="name">
           <input type="password" placeholder="密码" v-model="pwd">
           <button @click.enter="signIn">登录</button>
-          <!-- <router-link class="register" to="/admin/register">注册</router-link> -->
+          <router-link class="register" to="/admin/register">注册</router-link>
         </div>
       </div>
     </div>

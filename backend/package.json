@@ -25,5 +25,6 @@
     "koa2-cors": "^2.0.5",
     "md5": "^2.2.1",
     "mongoose": "^5.0.7"
-  }
+  },
+  "dependencies": {}
 }
