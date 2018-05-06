@@ -1,0 +1,12 @@
+{
+  "name": "Hakon",
+  "version": "1.0.0",
+  "main": "gruntfile.js",
+  "repository": "https://github.com/maxuekai/Hakon.git",
+  "author": "maxuekai",
+  "license": "MIT",
+  "dependencies": {
+    "grunt": "^1.0.2",
+    "grunt-electron-installer": "^2.1.0"
+  }
+}
