@@ -70,10 +70,6 @@
 .manage-bd ul li:last-child{
   border-bottom:none;
 }
-/* .manage-bd ul li:hover{
-  background:#454545;
-  color:#fff;
-} */
 .manage-bd li .module-name{
   font-size:14px;color:inherit;
   text-decoration:none;
@@ -93,10 +89,10 @@
   margin-left:20px;
 }
 .icon-del{
-  background:url(/src/assets/img/icon-delete.png);
+  background:url(~img/icon-delete.png);
 }
 .icon-edit{
-  background:url(/src/assets/img/icon-edit.png)
+  background:url(~img/icon-edit.png)
 }
 </style>
 

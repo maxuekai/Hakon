@@ -25,25 +25,26 @@ function createWindow () {
       loading.hide();
       loading.close();
     });
-        // and load the index.html of the app.
-    mainWindow.loadURL(url.format({
-      pathname: path.join(__dirname, '/dist/index.html'),
-      protocol: 'file:',
-      slashes: true
-    }));
-    // mainWindow.loadURL('http://127.0.0.1:8080/#/moduleManageTool/', {});
+    // and load the index.html of the app.
+    // mainWindow.loadURL(url.format({
+    //   pathname: path.join(__dirname, '/dist/index.html'),
+    //   protocol: 'file:',
+    //   hash: '#index'
+    //   // slashes: true
+    // }));
+    mainWindow.loadURL('http://127.0.0.1:8080/#/moduleManageTool/', {});
   });
   loading.loadURL(`file://${__dirname}/dist/loading.html`);
   loading.show();
 
-    // Open the DevTools.
+  // Open the DevTools.
   mainWindow.webContents.openDevTools();
 
-    // Emitted when the window is closed.
+  // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
     mainWindow = null;
   });
   ipcMain.on('min', e => mainWindow.minimize());
@@ -57,7 +58,12 @@ function createWindow () {
   ipcMain.on('close', e => mainWindow.close());
   ipcMain.on('webview', e => {
     let webview = new BrowserWindow({ width: 1014, height: 680, show: true, frame: true, autoHideMenuBar: true });
-    webview.loadURL('http://127.0.0.1:8080/#/admin/login', {});
+    webview.loadURL(url.format({
+      pathname: path.join(__dirname, '/dist/index.html'),
+      protocol: 'file:',
+      hash: '#admin/login'
+      // slashes: true
+    }));
     webview.webContents.openDevTools();
   });
 }

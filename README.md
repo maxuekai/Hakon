@@ -1,10 +1,11 @@
-# hakon
+# Hakon
 
-> hakon for css developer
+> Hakon for css developer
 
 ## Development
 
 ``` bash
+# frontend
 # install dependencies
 yarn
 
@@ -12,6 +13,13 @@ yarn
 yarn run dev
 
 # tune up election
+yarn start
+
+# backend
+# install dependencies
+yarn
+
+# start server
 yarn start
 ```
 

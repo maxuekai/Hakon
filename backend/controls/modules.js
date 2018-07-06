@@ -25,7 +25,7 @@ async function uploadCode(ctx, next) {
   }
 }
 
-async function updateCode(ctx, next) {
+async function updateCode(ctx) {
   try{
     ctx.status = 200;
     let data = ctx.request.body;
@@ -55,7 +55,7 @@ async function updateCode(ctx, next) {
   }
 }
 
-async function getAllModules(ctx, next) {
+async function getAllModules(ctx) {
   try{
     const mod = await Mod.find();
     ctx.body = {
@@ -122,7 +122,7 @@ async function deleteModule(ctx, next) {
   }
 }
 
-async function getAllCategory(ctx, next) {
+async function getAllCategory(ctx) {
   try{
     const mod = await Mod.distinct('category');
     if(mod) {

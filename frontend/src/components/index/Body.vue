@@ -148,19 +148,24 @@ export default {
   },
   methods: {
     async drop (e) {
+      // 拖拽开关
       this.dropHover = false;
+      // 处理提示
       this.tips = [];
+      // 获取文件信息
       this.fileInfo = e.dataTransfer.files;
+      console.log(this.fileInfo);
+      // 正在处理文件的序号
       this.progress.index = 0;
+      // 需要处理的文件数量
       this.progress.length = this.fileInfo.length - 1;
       this.handlefile();
     },
     async handlefile () {
       let pro = this.progress;
-      console.log(pro.index);
       let filePath = this.fileInfo[pro.index].path;
-      let pathObj = path.parse(filePath);
-      let ext = pathObj.ext;
+      // 获取文件类型
+      let ext = path.parse(filePath).ext;
       this.tips.push({
         txt: `正在处理：${filePath}`,
         type: 'normal'
