@@ -1,3 +1,7 @@
+/**
+ * 接口路由
+ */
+
 const Router = require('koa-router');
 
 const user = require('../controls/user');

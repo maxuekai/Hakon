@@ -6,6 +6,7 @@ const path = global.require('path');
 const fs = global.require('fs');
 const imagemin = global.require('imagemin');
 const imageminPngquant = global.require('imagemin-pngquant');
+
 /**
  * 配置 sprite 信息
  *

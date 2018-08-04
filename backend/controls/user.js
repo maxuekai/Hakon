@@ -1,7 +1,15 @@
+/**
+ * 用户管理方法
+ */
 
 const User  = require('../models/user');
 const md5 = require('md5');
 
+/**
+ * 登录
+ * @param {Object} ctx 
+ * @param {Object} next 
+ */
 async function login(ctx, next) {
   try {
     let data = ctx.request.body;
@@ -40,6 +48,11 @@ async function login(ctx, next) {
   }
 }
 
+/**
+ * 注册
+ * @param {Object} ctx 
+ * @param {Object} next 
+ */
 async function register(ctx, next) {
   try {
     let data = ctx.request.body;
@@ -73,6 +86,11 @@ async function register(ctx, next) {
   }
 }
 
+/**
+ * 检查登录
+ * @param {Object} ctx 
+ * @param {Object} next 
+ */
 async function checkLogin(ctx, next){
   try {
     let usr = ctx.cookies.get('usr');
