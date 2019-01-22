@@ -48,7 +48,7 @@
 
 <script>
 // 唤起客户端功能
-const {ipcRenderer: ipc} = global.require('electron');
+const ipc = global.require('electron').ipcRenderer;
 
 export default {
   methods: {

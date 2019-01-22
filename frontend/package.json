@@ -12,7 +12,7 @@
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
     "build": "node build/build.js",
-    "package": "electron-packager . hakon --platform=win32 --arch=all --icon=./favicon.ico --version=1.0.0 --out=../hakon/ --overwrite=true --ignore=.git --prune=true"
+    "package": "electron-packager ./dist hakon --platform=win32 --arch=all --icon=./favicon.ico --version=1.0.0 --out=../hakon/ --overwrite=true --ignore=.git --prune=true"
   },
   "dependencies": {
     "app": "^0.1.0",
@@ -22,7 +22,7 @@
     "css-loader": "^0.28.0",
     "cssnano": "^3.10.0",
     "file-loader": "^1.1.4",
-    "fs": "0.0.1-security",
+    "fs-extra": "^7.0.0",
     "imagemin": "^5.3.1",
     "imagemin-gifsicle": "^5.2.0",
     "imagemin-jpegtran": "^5.0.2",
@@ -81,7 +81,6 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
-    "fs": "0.0.1-security",
     "html-webpack-plugin": "^2.30.1",
     "imagemin": "^5.3.1",
     "imagemin-gifsicle": "^5.2.0",

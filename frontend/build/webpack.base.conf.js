@@ -20,6 +20,7 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
+  target: 'electron-renderer',
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'

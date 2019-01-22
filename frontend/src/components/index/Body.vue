@@ -39,11 +39,14 @@
                 </div>
             </div>
             <div class="wp-drag">
-                <div class="drag-main" v-bind:class=" {'drop-hover': dropHover} " @dragover.prevent="dropHover = true" @drop.prevent="drop">
+                <div class="drag-loading" v-show="loading">
+                    <p>插件加载中，请稍后...</p>
+                </div>
+                <div class="drag-main" :class=" {'drop-hover': dropHover} " @dragover.prevent="dropHover = true" @drop.prevent="drop">
                     <p>将文件拖拽到此区域</p>
                 </div>
                 <div class="drag-log">
-                    <p v-for="item in tips" v-bind:class="item.type">
+                    <p v-for="item in tips" :class="item.type" :key="item.id">
                         {{ item.txt }}
                     </p>
                 </div>
@@ -79,6 +82,10 @@
 .wp-drag .drag-main p{
     position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);
     font-size:24px;color:#999999;
+}
+.wp-drag .drag-loading p{
+    position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);
+    font-size:24px;color:#F22233;
 }
 .wp-drag .drag-main.drop-hover{
     opacity:1;
@@ -116,13 +123,14 @@ input[type=checkbox]{
 </style>
 
 <script>
-import {handleCss, handleHtml, handleImage} from '@/assets/js/hp-handlefile';
+// const hd = require('@/assets/js/handlefile');
 const path = global.require('path');
 
 export default {
   data () {
     return {
-      dropHover: true,
+      dropHover: false,
+      loading: true,
       fileInfo: [],
       mode: {
         spriteRemMode: false,
@@ -135,7 +143,8 @@ export default {
       progress: {
         index: 0,
         length: 0
-      }
+      },
+      hd: {}
     };
   },
   watch: {
@@ -154,7 +163,6 @@ export default {
       this.tips = [];
       // 获取文件信息
       this.fileInfo = e.dataTransfer.files;
-      console.log(this.fileInfo);
       // 正在处理文件的序号
       this.progress.index = 0;
       // 需要处理的文件数量
@@ -171,12 +179,12 @@ export default {
         type: 'normal'
       });
       new Promise((resolve, reject) => {
-        if (/css/.test(ext)) {
-          handleCss(filePath, this.mode, resolve, reject);
-        } else if (/html/.test(ext)) {
-          handleHtml(filePath, resolve, reject);
-        } else if (/jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga/.test(ext)) {
-          handleImage(filePath, this.mode.imgQuant, resolve, reject);
+        if (/\.css$/.test(ext)) {
+          this.hd.handleCss(filePath, this.mode, resolve, reject);
+        } else if (/\.html$/.test(ext)) {
+          this.hd.handleHtml(filePath, resolve, reject);
+        } else if (/\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/.test(ext)) {
+          this.hd.handleImage(filePath, this.mode.imgQuant, resolve, reject);
         }
       }).then(res => {
         this.tips.push(res);
@@ -198,6 +206,13 @@ export default {
     if (mode) {
       this.mode = JSON.parse(mode);
     }
+  },
+  mounted () {
+    require.ensure([], () => {
+      this.hd = require('@/assets/js/handlefile');
+      this.loading = false;
+      this.dropHover = true;
+    });
   }
 };
 </script>

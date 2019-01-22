@@ -1,11 +1,7 @@
 'use strict';
 
 const postcss = global.require('postcss');
-const sprites = global.require('postcss-sprites');
 const path = global.require('path');
-const fs = global.require('fs');
-const imagemin = global.require('imagemin');
-const imageminPngquant = global.require('imagemin-pngquant');
 /**
  * 配置 sprite 信息
  *
@@ -14,7 +10,7 @@ const imageminPngquant = global.require('imagemin-pngquant');
  * @param {function} cb
  * @param {function} error
  */
-export default function (stylesheetPath, mode, cb, error) {
+function sprite (stylesheetPath, mode) {
   let pathObj = path.parse(stylesheetPath);
   let basePath = pathObj.dir.split(path.sep).slice(0, -1).join(path.sep);
   let opts = {
@@ -22,8 +18,7 @@ export default function (stylesheetPath, mode, cb, error) {
     spritePath: './dist/img',
     basePath: basePath,
     spritesmith: {
-      padding: 5
-      // algorithm: 'top-down'
+      padding: 2
     },
     filterBy: image => {
       if (!~image.url.indexOf('/slice/')) {
@@ -92,32 +87,6 @@ export default function (stylesheetPath, mode, cb, error) {
     }
   };
 
-  fs.readFile(stylesheetPath, 'utf-8', (err, css) => {
-    if (err) {
-      error(err);
-    } else {
-      // 处理雪碧图
-      postcss([sprites(opts)])
-        .process(css, {
-          from: stylesheetPath,
-          to: basePath + '/dist/css/' + pathObj.base
-        })
-        .then(result => {
-          if (mode.imgQuant) {
-            // 压缩雪碧图
-            imagemin([path.join(basePath, '/dist/img/spr*.png')], path.join(basePath, '/dist/img/'), {
-              plugins: [
-                imageminPngquant({
-                  quality: '100'
-                })
-              ]
-            }).then(() => {
-              cb(result.css);
-            });
-          } else {
-            cb(result.css);
-          }
-        });
-    }
-  });
-}
+  return opts;
+};
+export default sprite;
