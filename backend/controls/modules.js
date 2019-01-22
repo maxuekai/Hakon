@@ -1,7 +1,14 @@
-
+/**
+ * 模板操作
+ */
 
 const Mod  = require('../models/modules');
 
+/**
+ * 上传模板代码
+ * @param {Object}} ctx 
+ * @param {Object} next 
+ */
 async function uploadCode(ctx, next) {
   try{
     let data = ctx.request.body;
@@ -25,6 +32,10 @@ async function uploadCode(ctx, next) {
   }
 }
 
+/**
+ * 更新模板代码
+ * @param {Object} ctx 
+ */
 async function updateCode(ctx) {
   try{
     ctx.status = 200;
@@ -55,6 +66,10 @@ async function updateCode(ctx) {
   }
 }
 
+/**
+ * 获取所有模板代码
+ * @param {Object} ctx 
+ */
 async function getAllModules(ctx) {
   try{
     const mod = await Mod.find();
@@ -71,6 +86,11 @@ async function getAllModules(ctx) {
   }
 }
 
+/**
+ * 获取某个模板代码
+ * @param {Object} ctx 
+ * @param {Object} next 
+ */
 async function getModule(ctx, next) {
   try{
     let data = ctx.request.query;
@@ -96,6 +116,11 @@ async function getModule(ctx, next) {
   }
 }
 
+/**
+ * 删除某个模板
+ * @param {Object} ctx 
+ * @param {Object} next 
+ */
 async function deleteModule(ctx, next) {
   try{
     let data = ctx.request.body;
@@ -122,6 +147,10 @@ async function deleteModule(ctx, next) {
   }
 }
 
+/**
+ * 获取所有的模板类别
+ * @param {Object} ctx 
+ */
 async function getAllCategory(ctx) {
   try{
     const mod = await Mod.distinct('category');
