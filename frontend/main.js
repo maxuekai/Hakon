@@ -50,29 +50,6 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-<<<<<<< HEAD
-=======
-  ipcMain.on('min', e => mainWindow.minimize());
-  ipcMain.on('max', e => {
-    if (mainWindow.isMaximized()) {
-      mainWindow.unmaximize();
-    } else {
-      mainWindow.maximize();
-    }
-  });
-  ipcMain.on('close', e => mainWindow.close());
-  ipcMain.on('webview', e => {
-    let webview = new BrowserWindow({ width: 1014, height: 680, show: true, frame: true, autoHideMenuBar: true });
-    // webview.loadURL(url.format({
-    //   pathname: path.join(__dirname, '/dist/index.html'),
-    //   protocol: 'file:',
-    //   hash: '#admin/login'
-    //   // slashes: true
-    // }));
-    webview.loadURL('http://127.0.0.1:8080/#admin/login', {});
-    webview.webContents.openDevTools();
-  });
->>>>>>> 8b335e38439bfcf2a1b58e4ce903845544b44f07
 }
 
 app.on('ready', createWindow);
