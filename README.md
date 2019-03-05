@@ -1,21 +1,30 @@
 # Hakon
 
-> Hakon for css developer
+> css 后处理工具
 
-## Development
+用于合并雪碧图、css属性加前缀、压缩css等
+
+## 开发
 
 ``` bash
 # frontend
+cd frontend
+
 # install dependencies
 yarn
 
 # serve with hot reload at localhost:8080
 yarn run dev
 
-# tune up election
+# open up election
 yarn start
 
+```
+
+``` bash
 # backend
+cd backend
+
 # install dependencies
 yarn
 
@@ -23,9 +32,11 @@ yarn
 yarn start
 ```
 
-## Package
+## 打包
 
 ``` bash
+cd frontend
+
 # build for production with minification
 yarn run build
 
@@ -36,16 +47,6 @@ yarn run build --report
 yarn run package
 ```
 
-## Test
+## 更多
 
-``` bash
-# run unit tests
-yarn run unit
-
-# run all tests
-yarn test
-```
-
-## More
-
-More feature coming soon.
+更多功能正在开发中...
